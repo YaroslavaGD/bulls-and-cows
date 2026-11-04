@@ -1,4 +1,4 @@
 export const createDigitValidator =
-  (_base: number) =>
-  (_char: string): boolean =>
-    false;
+  (base: number) =>
+  (char: string): boolean =>
+    char.length === 1 && !isNaN(parseInt(char, base));
