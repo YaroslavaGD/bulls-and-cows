@@ -9,6 +9,7 @@ export const renderGameScreen = (
   state: GameState,
   onSubmit: (guess: string) => void,
   records: RecordEntry[],
+  onNewGame: () => void,
 ): HTMLElement => {
   const isDigit = createDigitValidator(state.settings.base);
 
@@ -23,7 +24,7 @@ export const renderGameScreen = (
 
   const button = el('button', {
     type: 'button',
-    textContent: 'submit',
+    textContent: 'Попытаться призвать',
   });
   button.addEventListener('click', () => onSubmit(input.value));
 
@@ -36,6 +37,11 @@ export const renderGameScreen = (
         textContent: `Победа! Попыток: ${state.history.length}, время: ${Math.round(((state.finishedAt ?? 0) - state.startedAt) / 1000)} c`,
       })
     : null;
+  const newGame = el('button', {
+    type: 'button',
+    textContent: 'НОВЫЙ ПРИЗЫВ',
+  });
+  newGame.addEventListener('click', onNewGame);
 
   return el(
     'main',
@@ -45,5 +51,6 @@ export const renderGameScreen = (
     renderHistory(state.history),
     ...(message ? [message] : []),
     renderRecords(records),
+    newGame,
   );
 };
