@@ -1,3 +1,4 @@
+const KEY = 'summoning:records';
 export type RecordEntry = {
   length: number;
   base: number;
@@ -41,3 +42,13 @@ export const parseRecords = (raw: string | null): RecordEntry[] => {
 
 export const addRecord = (records: RecordEntry[], entry: RecordEntry, limit: number): RecordEntry[] =>
   [...records, entry].sort(compareRecords).slice(0, limit);
+
+export const loadRecords = (): RecordEntry[] => parseRecords(localStorage.getItem(KEY));
+
+export const saveRecords = (records: RecordEntry[]): void => {
+  try {
+    localStorage.setItem(KEY, JSON.stringify(records));
+  } catch {
+    // Storage may be full or disabled; losing a record must not crash the game.
+  }
+};
