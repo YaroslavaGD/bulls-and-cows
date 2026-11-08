@@ -1,7 +1,5 @@
-export type GuessResult = {
-  bulls: number;
-  cows: number;
-};
+import type { GuessResult } from './types.js';
+
 export const evaluateGuess = (secret: string, guess: string): GuessResult => {
   const secretDigits = [...secret.toLowerCase()];
   const guessDigits = [...guess.toLowerCase()];
