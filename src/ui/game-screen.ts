@@ -1,15 +1,16 @@
 import { createDigitValidator } from '../core/createDigitValidator.js';
 import type { GameState } from '../core/types.js';
-import type { RecordEntry } from '../storage/records.js';
+// import type { RecordEntry } from '../storage/records.js';
 import { el } from './dom.js';
 import { renderHistory } from './history-view.js';
-import { renderRecords } from './records-view.js';
+// import { renderRecords } from './records-view.js';
 
 export const renderGameScreen = (
   state: GameState,
   onSubmit: (guess: string) => void,
-  records: RecordEntry[],
+  // records: RecordEntry[],
   onNewGame: () => void,
+  onShowRecords: () => void,
 ): HTMLElement => {
   const isDigit = createDigitValidator(state.settings.base);
 
@@ -37,11 +38,15 @@ export const renderGameScreen = (
         textContent: `Победа! Попыток: ${state.history.length}, время: ${Math.round(((state.finishedAt ?? 0) - state.startedAt) / 1000)} c`,
       })
     : null;
+
   const newGame = el('button', {
     type: 'button',
     textContent: 'НОВЫЙ ПРИЗЫВ',
   });
   newGame.addEventListener('click', onNewGame);
+
+  const records = el('button', { type: 'button', textContent: 'РЕКОРДЫ' });
+  records.addEventListener('click', onShowRecords);
 
   return el(
     'main',
@@ -50,7 +55,8 @@ export const renderGameScreen = (
     button,
     renderHistory(state.history),
     ...(message ? [message] : []),
-    renderRecords(records),
+    // renderRecords(records),
     newGame,
+    records,
   );
 };

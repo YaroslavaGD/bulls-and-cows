@@ -5,6 +5,7 @@ import type { GameSettings, GameState } from './core/types.js';
 import { addRecord, loadRecords, saveRecords } from './storage/records.js';
 import { renderGameScreen } from './ui/game-screen.js';
 import { renderMenuScreen } from './ui/menu-screen.js';
+import { renderRecordsScreen } from './ui/records-screen.js';
 
 let state: GameState | null = null; // null - game menu
 
@@ -37,9 +38,24 @@ const handleSubmit = (guess: string): void => {
 
   render();
 };
+
+let isRecordsOpen = false;
+
+const toggleRecords = (): void => {
+  isRecordsOpen = !isRecordsOpen;
+  render();
+};
+
 const render = (): void => {
+  if (isRecordsOpen) {
+    document.body.replaceChildren(renderRecordsScreen(loadRecords(), toggleRecords));
+    return;
+  }
+
   document.body.replaceChildren(
-    state === null ? renderMenuScreen(startGame) : renderGameScreen(state, handleSubmit, loadRecords(), backToMenu),
+    state === null
+      ? renderMenuScreen(startGame, toggleRecords)
+      : renderGameScreen(state, handleSubmit, backToMenu, toggleRecords),
   );
 };
 

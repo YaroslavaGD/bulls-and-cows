@@ -11,7 +11,7 @@ const BASES = [
 
 const LENGTHS = [2, 3, 4, 5, 6];
 
-export const renderMenuScreen = (onStart: (settings: GameSettings) => void): HTMLElement => {
+export const renderMenuScreen = (onStart: (settings: GameSettings) => void, onShowRecords: () => void): HTMLElement => {
   const baseSelect = el(
     'select',
     {},
@@ -47,7 +47,7 @@ export const renderMenuScreen = (onStart: (settings: GameSettings) => void): HTM
 
     if (Number(lengthSelect.value) > base) lengthSelect.value = '2';
 
-    info.textContent = `Возможных комбинаций ${countPossibleSecrets(Number(lengthSelect.value), base)}`;
+    info.textContent = `Возможных комбинаций: ${countPossibleSecrets(Number(lengthSelect.value), base)}`;
   };
 
   baseSelect.addEventListener('change', update);
@@ -63,5 +63,8 @@ export const renderMenuScreen = (onStart: (settings: GameSettings) => void): HTM
     onStart({ length: Number(lengthSelect.value), base: Number(baseSelect.value) });
   });
 
-  return el('main', {}, baseSelect, lengthSelect, info, start);
+  const records = el('button', { type: 'button', textContent: 'РЕКОРДЫ' });
+  records.addEventListener('click', onShowRecords);
+
+  return el('main', {}, baseSelect, lengthSelect, info, start, records);
 };
