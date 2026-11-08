@@ -3,6 +3,7 @@ import { generateSecret } from './core/generateSecret.js';
 import { isValidGuess } from './core/isValidGuess.js';
 import { addRecord, loadRecords, saveRecords } from './storage/records.js';
 import { renderGameScreen } from './ui/game-screen.js';
+import { renderMenuScreen } from './ui/menu-screen.js';
 
 const settings = { length: 4, base: 10 };
 
@@ -30,6 +31,4 @@ const render = (): void => {
   document.body.replaceChildren(renderGameScreen(state, handleSubmit, loadRecords()));
 };
 
-console.log(state.secret);
-
-render();
+document.body.replaceChildren(renderMenuScreen((settings) => document.body.append(JSON.stringify(settings))));
