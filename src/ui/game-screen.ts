@@ -1,14 +1,11 @@
 import { createDigitValidator } from '../core/createDigitValidator.js';
 import type { GameState } from '../core/types.js';
-// import type { RecordEntry } from '../storage/records.js';
 import { el } from './dom.js';
 import { renderHistory } from './history-view.js';
-// import { renderRecords } from './records-view.js';
 
 export const renderGameScreen = (
   state: GameState,
   onSubmit: (guess: string) => void,
-  // records: RecordEntry[],
   onNewGame: () => void,
   onShowRecords: () => void,
 ): HTMLElement => {
@@ -48,15 +45,5 @@ export const renderGameScreen = (
   const records = el('button', { type: 'button', textContent: 'РЕКОРДЫ' });
   records.addEventListener('click', onShowRecords);
 
-  return el(
-    'main',
-    {},
-    input,
-    button,
-    renderHistory(state.history),
-    ...(message ? [message] : []),
-    // renderRecords(records),
-    newGame,
-    records,
-  );
+  return el('main', {}, input, button, renderHistory(state.history), ...(message ? [message] : []), newGame, records);
 };
