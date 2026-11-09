@@ -12,6 +12,10 @@ const BASES = [
 const LENGTHS = [2, 3, 4, 5, 6];
 
 export const renderMenuScreen = (onStart: (settings: GameSettings) => void, onShowRecords: () => void): HTMLElement => {
+  const title = el('h1', {
+    className: 'menu__title',
+    textContent: 'THE SUMMONING',
+  });
   const baseOptions = el(
     'div',
     { className: 'menu__base-options' },
@@ -88,6 +92,7 @@ export const renderMenuScreen = (onStart: (settings: GameSettings) => void, onSh
   return el(
     'main',
     { className: 'screen screen--menu' },
+    title,
     baseOptions,
     baseSlider,
     lengthOptions,
