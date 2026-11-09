@@ -61,7 +61,14 @@ export const renderGameScreen = (
   });
   button.addEventListener('click', () => {
     if (!isValidGuess(input.value, state.settings.length, state.settings.base)) {
-      showError('Ритуал нарушен. Проверь знаки и их последовательность.');
+      showError('Ритуал нарушен. Что-то со знаками и их последовательностью.');
+      return;
+    }
+
+    const isRepeat = state.history.some((entry) => entry.guess.toLowerCase() === input.value.toLowerCase());
+
+    if (isRepeat) {
+      showError('Этот ритуал уже проводился. Повтор не имеет силы.');
       return;
     }
 
