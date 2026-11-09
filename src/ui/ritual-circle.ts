@@ -4,7 +4,6 @@ const SVG_NS = 'http://www.w3.org/2000/svg';
 const SIZE = 400;
 const CENTER = SIZE / 2;
 const RING_RADIUS = 180;
-// const NODE_RADIUS = 18;
 
 type Point = { x: number; y: number };
 
@@ -48,6 +47,7 @@ export const renderRitualCircle = (
   onDigitClick: (digit: string) => void,
 ): HTMLDivElement => {
   const activeDigits = [...input.toUpperCase()];
+  const duplicateDigits = new Set(activeDigits.filter((digit, index) => activeDigits.indexOf(digit) !== index));
 
   const buttons = Array.from({ length: base }, (_, index) => {
     const digit = index.toString(base).toUpperCase();
@@ -55,7 +55,13 @@ export const renderRitualCircle = (
 
     const button = el('button', {
       type: 'button',
-      className: activeDigits.includes(digit) ? 'ritual__button ritual__button--active' : 'ritual__button',
+      className: [
+        'ritual__button',
+        activeDigits.includes(digit) && 'ritual__button--active',
+        duplicateDigits.has(digit) && 'ritual__button--duplicate',
+      ]
+        .filter(Boolean)
+        .join(' '),
       textContent: digit,
     });
 

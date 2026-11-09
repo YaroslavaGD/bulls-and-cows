@@ -8,6 +8,7 @@
   --color-text: #e0c9ce;
   --color-muted: #9c7c84;
   --color-border: #49303b;
+  --color-duplicate: #e291d0;
 }
 
 * {
@@ -319,4 +320,12 @@ select {
   border-color: var(--color-glow);
   color: var(--color-glow);
   box-shadow: 0 0 10px var(--color-glow);
+}
+
+.ritual__button--duplicate {
+  opacity: 0.85;
+  border-style: dashed;
+  box-shadow: none;
+  border-color: var(--color-duplicate);
+  color: var(--color-duplicate);
 }
