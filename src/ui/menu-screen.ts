@@ -76,6 +76,7 @@ export const renderMenuScreen = (onStart: (settings: GameSettings) => void, onSh
 
   const start = el('button', {
     type: 'button',
+    className: 'button button--primary',
     textContent: 'НАЧАТЬ ПРИЗЫВ',
   });
 
@@ -86,7 +87,11 @@ export const renderMenuScreen = (onStart: (settings: GameSettings) => void, onSh
     onStart({ length: length, base: base });
   });
 
-  const records = el('button', { type: 'button', textContent: 'РЕКОРДЫ' });
+  const records = el('button', {
+    type: 'button',
+    className: 'button button--secondary',
+    textContent: 'РЕКОРДЫ',
+  });
   records.addEventListener('click', onShowRecords);
 
   return el(
