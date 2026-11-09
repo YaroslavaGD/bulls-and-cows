@@ -7,7 +7,7 @@ import { renderGameScreen } from './ui/game-screen.js';
 import { renderMenuScreen } from './ui/menu-screen.js';
 import { renderRecordsScreen } from './ui/records-screen.js';
 
-let state: GameState | null = null; // null - game menu
+let state: GameState | null = null; // null - menu, GameState - game
 
 const startGame = (settings: GameSettings): void => {
   state = createGame(settings, generateSecret(settings.length, settings.base), Date.now());

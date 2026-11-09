@@ -12,46 +12,62 @@ const BASES = [
 const LENGTHS = [2, 3, 4, 5, 6];
 
 export const renderMenuScreen = (onStart: (settings: GameSettings) => void, onShowRecords: () => void): HTMLElement => {
-  const baseSelect = el(
-    'select',
-    {},
-    ...BASES.map(({ name, base }) =>
-      el('option', {
-        value: String(base),
+  const baseOptions = el(
+    'div',
+    { className: 'menu__base-options' },
+    ...BASES.map(({ name }) =>
+      el('span', {
         textContent: name,
       }),
     ),
   );
-  baseSelect.value = '10';
 
-  const lengthSelect = el(
-    'select',
-    {},
+  const baseSlider = el('input', {
+    className: 'menu__base-slider',
+    type: 'range',
+    min: '0',
+    max: '3',
+    step: '1',
+    value: '2',
+  });
+
+  const lengthOptions = el(
+    'div',
+    { className: 'menu__length-options' },
     ...LENGTHS.map((length) =>
-      el('option', {
-        value: String(length),
+      el('span', {
         textContent: String(length),
       }),
     ),
   );
-  lengthSelect.value = '4';
+
+  const lengthSlider = el('input', {
+    className: 'menu__length-slider',
+    type: 'range',
+    min: '0',
+    max: '4',
+    step: '1',
+    value: '2',
+  });
 
   const info = el('p');
 
   const update = (): void => {
-    const base = Number(baseSelect.value);
+    const base = BASES[Number(baseSlider.value)].base;
+    const maxLengthIndex = Math.min(base, 6) - 2;
+    lengthSlider.max = String(maxLengthIndex);
 
-    [...lengthSelect.options].forEach((option) => {
-      option.disabled = Number(option.value) > base;
-    });
+    if (Number(lengthSlider.value) > maxLengthIndex) {
+      lengthSlider.value = String(maxLengthIndex);
+    }
 
-    if (Number(lengthSelect.value) > base) lengthSelect.value = '2';
+    const length = LENGTHS[Number(lengthSlider.value)];
 
-    info.textContent = `Возможных комбинаций: ${countPossibleSecrets(Number(lengthSelect.value), base)}`;
+    info.textContent = `Возможных комбинаций: ${countPossibleSecrets(Number(length), base)}`;
   };
 
-  baseSelect.addEventListener('change', update);
-  lengthSelect.addEventListener('change', update);
+  baseSlider.addEventListener('input', update);
+  lengthSlider.addEventListener('input', update);
   update();
 
   const start = el('button', {
@@ -60,11 +76,24 @@ export const renderMenuScreen = (onStart: (settings: GameSettings) => void, onSh
   });
 
   start.addEventListener('click', () => {
-    onStart({ length: Number(lengthSelect.value), base: Number(baseSelect.value) });
+    const length = LENGTHS[Number(lengthSlider.value)];
+    const base = BASES[Number(baseSlider.value)].base;
+
+    onStart({ length: length, base: base });
   });
 
   const records = el('button', { type: 'button', textContent: 'РЕКОРДЫ' });
   records.addEventListener('click', onShowRecords);
 
-  return el('main', {}, baseSelect, lengthSelect, info, start, records);
+  return el(
+    'main',
+    { className: 'screen screen--menu' },
+    baseOptions,
+    baseSlider,
+    lengthOptions,
+    lengthSlider,
+    info,
+    start,
+    records,
+  );
 };
