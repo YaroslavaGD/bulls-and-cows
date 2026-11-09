@@ -1,4 +1,5 @@
 import { createDigitValidator } from '../core/createDigitValidator.js';
+import { isValidGuess } from '../core/isValidGuess.js';
 import type { GameState } from '../core/types.js';
 import { el } from './dom.js';
 import { renderHistory } from './history-view.js';
@@ -17,6 +18,19 @@ export const renderGameScreen = (
     type: 'text',
     maxLength: state.settings.length,
   });
+
+  const error = el('p', {
+    className: 'game__error',
+    textContent: '',
+  });
+
+  const showError = (message: string): void => {
+    error.textContent = message;
+  };
+
+  const clearError = (): void => {
+    error.textContent = '';
+  };
 
   let circle: HTMLDivElement;
 
@@ -37,6 +51,7 @@ export const renderGameScreen = (
 
   input.addEventListener('input', () => {
     updateInput(input.value);
+    clearError();
   });
 
   const button = el('button', {
@@ -44,7 +59,15 @@ export const renderGameScreen = (
     className: 'button button--primary',
     textContent: 'ПОПЫТАТЬСЯ ПРИЗВАТЬ',
   });
-  button.addEventListener('click', () => onSubmit(input.value));
+  button.addEventListener('click', () => {
+    if (!isValidGuess(input.value, state.settings.length, state.settings.base)) {
+      showError('Ритуал нарушен. Проверь знаки и их последовательность.');
+      return;
+    }
+
+    clearError();
+    onSubmit(input.value);
+  });
 
   const isWon = state.status === 'won';
   input.disabled = isWon;
@@ -75,6 +98,7 @@ export const renderGameScreen = (
     { className: 'screen screen--game' },
     circle,
     input,
+    error,
     button,
     renderHistory(state.history),
     ...(message ? [message] : []),

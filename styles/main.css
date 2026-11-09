@@ -329,3 +329,12 @@ select {
   border-color: var(--color-duplicate);
   color: var(--color-duplicate);
 }
+
+.game__error {
+  min-height: 18px;
+  margin: -12px 0 0;
+  color: var(--color-muted);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-align: center;
+}
