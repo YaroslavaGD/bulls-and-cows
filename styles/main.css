@@ -205,6 +205,17 @@ select {
   color: var(--color-muted);
 }
 
+.button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  filter: grayscale(0.5);
+}
+
+.button:disabled:hover {
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
 .screen--game {
   display: flex;
   flex-direction: column;
@@ -235,34 +246,6 @@ select {
   border-color: var(--color-glow);
   box-shadow: 0 0 20px rgb(242 38 82 / 25%);
 }
-
-/* .ritual {
-  width: min(90vw, 420px);
-  height: auto;
-}
-.ritual__ring {
-  fill: none;
-  stroke: var(--color-border);
-  stroke-width: 1;
-}
-.ritual__node {
-  fill: var(--color-bg);
-  stroke: var(--color-primary);
-  stroke-width: 1.5;
-}
-.ritual__node--active {
-  stroke: var(--color-glow);
-  filter: drop-shadow(0 0 6px var(--color-glow));
-}
-.ritual__label {
-  fill: var(--color-text);
-  font-size: 16px;
-}
-.ritual__line {
-  stroke: var(--color-glow);
-  stroke-width: 2;
-  filter: drop-shadow(0 0 4px var(--color-glow));
-} */
 
 .ritual {
   position: relative;

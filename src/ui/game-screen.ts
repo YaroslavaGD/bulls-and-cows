@@ -37,6 +37,16 @@ export const renderGameScreen = (
     return new Set(digits).size !== digits.length;
   };
 
+  const canSubmit = (value: string): boolean =>
+    isValidGuess(value, state.settings.length, state.settings.base) &&
+    !state.history.some((entry) => entry.guess.toLowerCase() === value.toLowerCase());
+
+  const button = el('button', {
+    type: 'button',
+    className: 'button button--primary',
+    textContent: 'ПОПЫТАТЬСЯ ПРИЗВАТЬ',
+  });
+
   let circle: HTMLDivElement;
 
   const updateInput = (value: string): void => {
@@ -54,6 +64,7 @@ export const renderGameScreen = (
 
     circle.replaceWith(next);
     circle = next;
+    button.disabled = !canSubmit(input.value);
   };
 
   circle = renderRitualCircle(state.settings.base, '', (digit) => {
@@ -62,12 +73,6 @@ export const renderGameScreen = (
 
   input.addEventListener('input', () => {
     updateInput(input.value);
-  });
-
-  const button = el('button', {
-    type: 'button',
-    className: 'button button--primary',
-    textContent: 'ПОПЫТАТЬСЯ ПРИЗВАТЬ',
   });
 
   button.addEventListener('click', () => {
@@ -89,7 +94,7 @@ export const renderGameScreen = (
 
   const isWon = state.status === 'won';
   input.disabled = isWon;
-  button.disabled = isWon;
+  button.disabled = isWon || !canSubmit(input.value);
 
   const message = isWon
     ? el('p', {
