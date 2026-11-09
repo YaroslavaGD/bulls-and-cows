@@ -46,8 +46,12 @@ export const renderGameInput = (state: GameState, onSubmit: (guess: string) => v
   const canSubmit = (value: string): boolean =>
     isValidGuess(value, state.settings.length, state.settings.base) && !isRepeatedGuess(value);
 
-  const validateInput = (value: string): void => {
-    if (hasDuplicateDigits(value)) {
+  const hasInvalidDigits = (value: string): boolean => [...value].some((digit) => !isDigit(digit));
+
+  const validateInput = (value: string, hasInvalid: boolean): void => {
+    if (hasInvalid) {
+      showError('Некоторые знаки не принадлежат выбранной системе.');
+    } else if (hasDuplicateDigits(value)) {
       showError('Каждый знак может встречаться только один раз.');
     } else if (value.length < state.settings.length) {
       showError('Последовательность ещё не завершена.');
@@ -63,7 +67,11 @@ export const renderGameInput = (state: GameState, onSubmit: (guess: string) => v
   const updateInput = (value: string): void => {
     input.value = [...value].filter(isDigit).join('').slice(0, state.settings.length);
 
-    validateInput(input.value);
+    const hasInvalid = hasInvalidDigits(value);
+
+    input.value = [...value].filter(isDigit).join('').slice(0, state.settings.length);
+
+    validateInput(input.value, hasInvalid);
 
     const next = renderRitualCircle(state.settings.base, input.value, (digit) => {
       updateInput(input.value + digit);
@@ -85,7 +93,7 @@ export const renderGameInput = (state: GameState, onSubmit: (guess: string) => v
 
   button.addEventListener('click', () => {
     if (!canSubmit(input.value)) {
-      validateInput(input.value);
+      validateInput(input.value, false);
       return;
     }
 
