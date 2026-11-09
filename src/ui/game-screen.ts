@@ -1,9 +1,7 @@
-import { createDigitValidator } from '../core/createDigitValidator.js';
-import { isValidGuess } from '../core/isValidGuess.js';
 import type { GameState } from '../core/types.js';
 import { el } from './dom.js';
+import { renderGameInput } from './game-input.js';
 import { renderHistory } from './history-view.js';
-import { renderRitualCircle } from './ritual-circle.js';
 
 export const renderGameScreen = (
   state: GameState,
@@ -11,97 +9,7 @@ export const renderGameScreen = (
   onNewGame: () => void,
   onShowRecords: () => void,
 ): HTMLElement => {
-  const isDigit = createDigitValidator(state.settings.base);
-
-  const input = el('input', {
-    className: 'game__input',
-    type: 'text',
-    maxLength: state.settings.length,
-  });
-
-  const error = el('p', {
-    className: 'game__error',
-    textContent: '',
-  });
-
-  const showError = (message: string): void => {
-    error.textContent = message;
-  };
-
-  const clearError = (): void => {
-    error.textContent = '';
-  };
-
-  const hasDuplicateDigits = (value: string): boolean => {
-    const digits = [...value.toLowerCase()];
-    return new Set(digits).size !== digits.length;
-  };
-
-  const hasInvalidDigits = (value: string): boolean => [...value].some((digit) => !isDigit(digit));
-
-  const isRepeatedGuess = (value: string): boolean =>
-    state.history.some((entry) => entry.guess.toLowerCase() === value.toLowerCase());
-
-  const canSubmit = (value: string): boolean =>
-    isValidGuess(value, state.settings.length, state.settings.base) && !isRepeatedGuess(value);
-
-  const validateInput = (value: string): void => {
-    if (hasDuplicateDigits(value)) {
-      showError('Каждый знак может встречаться только один раз.');
-    } else if (hasInvalidDigits(value)) {
-      showError('Некоторые знаки не принадлежат выбранной системе.');
-    } else if (value.length < state.settings.length) {
-      showError('Последовательность ещё не завершена.');
-    } else if (isRepeatedGuess(value)) {
-      showError('Эта комбинация уже встречалась. Попробуйте другую.');
-    } else {
-      clearError();
-    }
-  };
-
-  const button = el('button', {
-    type: 'button',
-    className: 'button button--primary',
-    textContent: 'ПОПЫТАТЬСЯ ПРИЗВАТЬ',
-  });
-
-  let circle: HTMLDivElement;
-
-  const updateInput = (value: string): void => {
-    input.value = [...value].filter(isDigit).join('').slice(0, state.settings.length);
-
-    validateInput(input.value);
-
-    const next = renderRitualCircle(state.settings.base, input.value, (digit) => {
-      updateInput(input.value + digit);
-    });
-
-    circle.replaceWith(next);
-    circle = next;
-    button.disabled = !canSubmit(input.value);
-  };
-
-  circle = renderRitualCircle(state.settings.base, '', (digit) => {
-    updateInput(input.value + digit);
-  });
-
-  input.addEventListener('input', () => {
-    updateInput(input.value);
-  });
-
-  button.addEventListener('click', () => {
-    if (!canSubmit(input.value)) {
-      validateInput(input.value);
-      return;
-    }
-
-    clearError();
-    onSubmit(input.value);
-  });
-
   const isWon = state.status === 'won';
-  input.disabled = isWon;
-  button.disabled = isWon || !canSubmit(input.value);
 
   const message = isWon
     ? el('p', {
@@ -126,10 +34,7 @@ export const renderGameScreen = (
   return el(
     'main',
     { className: 'screen screen--game' },
-    circle,
-    input,
-    error,
-    button,
+    renderGameInput(state, onSubmit),
     renderHistory(state.history),
     ...(message ? [message] : []),
     newGame,
