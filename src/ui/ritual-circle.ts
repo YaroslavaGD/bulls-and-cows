@@ -45,6 +45,7 @@ export const renderRitualCircle = (
   base: number,
   input: string,
   onDigitClick: (digit: string) => void,
+  isVictory = false,
 ): HTMLDivElement => {
   const activeDigits = [...input.toUpperCase()];
   const duplicateDigits = new Set(activeDigits.filter((digit, index) => activeDigits.indexOf(digit) !== index));
@@ -73,5 +74,13 @@ export const renderRitualCircle = (
     return button;
   });
 
-  return el('div', { className: 'ritual' }, createRoute(base, input), ...buttons);
+  const plane = el('div', { className: 'ritual__plane' }, createRoute(base, input), ...buttons);
+
+  return el(
+    'div',
+    {
+      className: `ritual ${isVictory ? 'ritual--victory' : ''}`,
+    },
+    plane,
+  );
 };

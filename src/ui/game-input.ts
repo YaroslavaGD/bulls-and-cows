@@ -73,9 +73,14 @@ export const renderGameInput = (state: GameState, onSubmit: (guess: string) => v
 
     validateInput(input.value, hasInvalid);
 
-    const next = renderRitualCircle(state.settings.base, input.value, (digit) => {
-      updateInput(input.value + digit);
-    });
+    const next = renderRitualCircle(
+      state.settings.base,
+      input.value,
+      (digit) => {
+        updateInput(input.value + digit);
+      },
+      isWon,
+    );
 
     circle.replaceWith(next);
     circle = next;
@@ -83,9 +88,14 @@ export const renderGameInput = (state: GameState, onSubmit: (guess: string) => v
     button.disabled = isWon || !canSubmit(input.value);
   };
 
-  circle = renderRitualCircle(state.settings.base, '', (digit) => {
-    updateInput(input.value + digit);
-  });
+  circle = renderRitualCircle(
+    state.settings.base,
+    '',
+    (digit) => {
+      updateInput(input.value + digit);
+    },
+    isWon,
+  );
 
   input.addEventListener('input', () => {
     updateInput(input.value);

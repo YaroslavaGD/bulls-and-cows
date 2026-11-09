@@ -51,6 +51,8 @@ export const renderGameScreen = (
   });
   records.addEventListener('click', onShowRecords);
 
+  const actions = el('div', { className: 'game__actions' }, newGame, records);
+
   return el(
     'main',
     { className: 'screen screen--game' },
@@ -58,7 +60,6 @@ export const renderGameScreen = (
     renderGameInput(state, onSubmit),
     renderHistory(state.history),
     ...(message ? [message] : []),
-    newGame,
-    records,
+    actions,
   );
 };
