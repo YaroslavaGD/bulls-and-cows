@@ -12,6 +12,7 @@ export const renderGameScreen = (
   const isDigit = createDigitValidator(state.settings.base);
 
   const input = el('input', {
+    className: 'game__input',
     type: 'text',
     maxLength: state.settings.length,
   });
@@ -22,7 +23,8 @@ export const renderGameScreen = (
 
   const button = el('button', {
     type: 'button',
-    textContent: 'Попытаться призвать',
+    className: 'button button--primary',
+    textContent: 'ПОПЫТАТЬСЯ ПРИЗВАТЬ',
   });
   button.addEventListener('click', () => onSubmit(input.value));
 
@@ -38,12 +40,26 @@ export const renderGameScreen = (
 
   const newGame = el('button', {
     type: 'button',
+    className: 'button button--secondary',
     textContent: 'НОВЫЙ ПРИЗЫВ',
   });
   newGame.addEventListener('click', onNewGame);
 
-  const records = el('button', { type: 'button', textContent: 'РЕКОРДЫ' });
+  const records = el('button', {
+    type: 'button',
+    className: 'button button--secondary',
+    textContent: 'РЕКОРДЫ',
+  });
   records.addEventListener('click', onShowRecords);
 
-  return el('main', {}, input, button, renderHistory(state.history), ...(message ? [message] : []), newGame, records);
+  return el(
+    'main',
+    { className: 'screen screen--game' },
+    input,
+    button,
+    renderHistory(state.history),
+    ...(message ? [message] : []),
+    newGame,
+    records,
+  );
 };
