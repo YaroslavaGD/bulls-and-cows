@@ -19,7 +19,12 @@ export const renderMenuScreen = (onStart: (settings: GameSettings) => void, onSh
 
   const baseLabel = el('p', {
     className: 'menu__label',
-    textContent: 'СИСТЕМА СЧИСЛЕНИЯ',
+    textContent: 'ЯЗЫК ПРИЗЫВА',
+  });
+
+  const lengthLabel = el('p', {
+    className: 'menu__label',
+    textContent: 'ЧИСЛО ЗНАКОВ',
   });
 
   const baseOptions = el(
@@ -145,6 +150,7 @@ export const renderMenuScreen = (onStart: (settings: GameSettings) => void, onSh
     baseLabel,
     baseOptions,
     baseSlider,
+    lengthLabel,
     lengthOptions,
     lengthSlider,
     info,

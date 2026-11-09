@@ -49,6 +49,10 @@ select {
   max-width: 420px;
 }
 
+.menu__length-options {
+  margin-top: 4px;
+}
+
 .menu__base-slider,
 .menu__length-slider {
   -webkit-appearance: none;
