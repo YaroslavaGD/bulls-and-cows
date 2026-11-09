@@ -11,6 +11,26 @@ export const renderGameScreen = (
 ): HTMLElement => {
   const isWon = state.status === 'won';
 
+  const baseNames: Record<number, string> = {
+    2: 'BIN',
+    8: 'OCT',
+    10: 'DEC',
+    16: 'HEX',
+  };
+
+  const header = el(
+    'header',
+    { className: 'game__header' },
+    el('h1', {
+      className: 'game__title',
+      textContent: 'THE SUMMONING',
+    }),
+    el('p', {
+      className: 'game__subtitle',
+      textContent: `${baseNames[state.settings.base]} · ДЛИНА ${state.settings.length}`,
+    }),
+  );
+
   const message = isWon
     ? el('p', {
         textContent: `Победа! Попыток: ${state.history.length}, время: ${Math.round(((state.finishedAt ?? 0) - state.startedAt) / 1000)} c`,
@@ -34,6 +54,7 @@ export const renderGameScreen = (
   return el(
     'main',
     { className: 'screen screen--game' },
+    header,
     renderGameInput(state, onSubmit),
     renderHistory(state.history),
     ...(message ? [message] : []),
