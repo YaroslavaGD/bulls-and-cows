@@ -211,3 +211,26 @@ select {
   justify-content: center;
   gap: 20px;
 }
+
+.game__input {
+  width: 240px;
+  padding: 14px 18px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  outline: none;
+  background: var(--color-panel);
+  color: var(--color-glow);
+  font-family: monospace;
+  font-size: 28px;
+  letter-spacing: 12px;
+  text-align: center;
+  box-shadow: 0 0 16px rgb(242 38 82 / 10%);
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.game__input:focus {
+  border-color: var(--color-glow);
+  box-shadow: 0 0 20px rgb(242 38 82 / 25%);
+}
