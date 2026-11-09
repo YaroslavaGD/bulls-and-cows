@@ -51,10 +51,104 @@ select {
 
 .menu__base-slider,
 .menu__length-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  border: none;
+  outline: none;
   display: block;
   width: 100%;
   max-width: 420px;
+  height: 20px;
   margin: 0;
+  padding: 0;
+  background: transparent;
+  /* accent-color: var(--color-glow); */
+  cursor: pointer;
+}
+
+.menu__base-slider:hover,
+.menu__length-slider:hover {
+  filter: drop-shadow(0 0 4px var(--color-glow));
+}
+
+.menu__base-slider::-webkit-slider-runnable-track,
+.menu__length-slider::-webkit-slider-runnable-track {
+  height: 3px;
+  background: linear-gradient(
+    to right,
+    var(--color-glow) 0%,
+    var(--color-glow) var(--progress, 0%),
+    var(--color-border) var(--progress, 0%),
+    var(--color-border) 100%
+  );
+  border-radius: 2px;
+}
+
+.menu__base-slider::-webkit-slider-thumb,
+.menu__length-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  margin-top: -4.5px;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-glow);
+  box-shadow: 0 0 8px rgb(242 38 82 / 35%);
+}
+
+.menu__base-slider::-moz-range-track,
+.menu__length-slider::-moz-range-track {
+  height: 3px;
+  background: var(--color-border);
+  border-radius: 2px;
+}
+
+.menu__base-slider::-moz-range-progress,
+.menu__length-slider::-moz-range-progress {
+  height: 3px;
+  background: var(--color-glow);
+}
+
+.menu__base-slider::-moz-range-thumb,
+.menu__length-slider::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-glow);
+  box-shadow: 0 0 8px rgb(242 38 82 / 35%);
+}
+
+.menu__label {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 0 -8px;
+  color: var(--color-muted);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+}
+
+.menu__option {
+  flex: 1;
+  padding: 12px 0;
+  text-align: center;
+  color: var(--color-muted);
+  border: 1px solid transparent;
+  cursor: pointer;
+  user-select: none;
+  transition: 0.2s;
+}
+
+.menu__option.is-active {
+  color: var(--color-glow);
+  background: rgb(181 30 67 / 20%);
+  border-color: rgb(181 30 67 / 25%);
+  border-radius: 5px;
+}
+
+.menu__option:hover {
+  color: var(--color-text);
 }
 
 .menu__title {

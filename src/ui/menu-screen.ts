@@ -16,11 +16,18 @@ export const renderMenuScreen = (onStart: (settings: GameSettings) => void, onSh
     className: 'menu__title',
     textContent: 'THE SUMMONING',
   });
+
+  const baseLabel = el('p', {
+    className: 'menu__label',
+    textContent: 'СИСТЕМА СЧИСЛЕНИЯ',
+  });
+
   const baseOptions = el(
     'div',
     { className: 'menu__base-options' },
     ...BASES.map(({ name }) =>
       el('span', {
+        className: 'menu__option',
         textContent: name,
       }),
     ),
@@ -40,6 +47,7 @@ export const renderMenuScreen = (onStart: (settings: GameSettings) => void, onSh
     { className: 'menu__length-options' },
     ...LENGTHS.map((length) =>
       el('span', {
+        className: 'menu__option',
         textContent: String(length),
       }),
     ),
@@ -56,6 +64,16 @@ export const renderMenuScreen = (onStart: (settings: GameSettings) => void, onSh
 
   const info = el('p');
 
+  const updateSliderProgress = (slider: HTMLInputElement): void => {
+    const min = Number(slider.min);
+    const max = Number(slider.max);
+    const value = Number(slider.value);
+
+    const progress = max === min ? 0 : ((value - min) / (max - min)) * 100;
+
+    slider.style.setProperty('--progress', `${progress}%`);
+  };
+
   const update = (): void => {
     const base = BASES[Number(baseSlider.value)].base;
     const maxLengthIndex = Math.min(base, 6) - 2;
@@ -67,8 +85,34 @@ export const renderMenuScreen = (onStart: (settings: GameSettings) => void, onSh
 
     const length = LENGTHS[Number(lengthSlider.value)];
 
+    baseOptions.querySelectorAll('.menu__option').forEach((option, index) => {
+      option.classList.toggle('is-active', index === Number(baseSlider.value));
+    });
+
+    lengthOptions.querySelectorAll('.menu__option').forEach((option, index) => {
+      option.classList.toggle('is-active', index === Number(lengthSlider.value));
+    });
+
     info.textContent = `Возможных комбинаций: ${countPossibleSecrets(Number(length), base)}`;
+    updateSliderProgress(baseSlider);
+    updateSliderProgress(lengthSlider);
   };
+
+  baseOptions.querySelectorAll('.menu__option').forEach((option, index) => {
+    option.addEventListener('click', () => {
+      baseSlider.value = String(index);
+      update();
+    });
+  });
+
+  lengthOptions.querySelectorAll('.menu__option').forEach((option, index) => {
+    option.addEventListener('click', () => {
+      if (index > Number(lengthSlider.max)) return;
+
+      lengthSlider.value = String(index);
+      update();
+    });
+  });
 
   baseSlider.addEventListener('input', update);
   lengthSlider.addEventListener('input', update);
@@ -98,6 +142,7 @@ export const renderMenuScreen = (onStart: (settings: GameSettings) => void, onSh
     'main',
     { className: 'screen screen--menu' },
     title,
+    baseLabel,
     baseOptions,
     baseSlider,
     lengthOptions,
