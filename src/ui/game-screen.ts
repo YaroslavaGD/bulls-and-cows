@@ -37,9 +37,11 @@ export const renderGameScreen = (
     return new Set(digits).size !== digits.length;
   };
 
+  const isRepeatedGuess = (value: string): boolean =>
+    state.history.some((entry) => entry.guess.toLowerCase() === value.toLowerCase());
+
   const canSubmit = (value: string): boolean =>
-    isValidGuess(value, state.settings.length, state.settings.base) &&
-    !state.history.some((entry) => entry.guess.toLowerCase() === value.toLowerCase());
+    isValidGuess(value, state.settings.length, state.settings.base) && !isRepeatedGuess(value);
 
   const button = el('button', {
     type: 'button',
@@ -54,6 +56,8 @@ export const renderGameScreen = (
 
     if (hasDuplicateDigits(input.value)) {
       showError('Каждый знак может встречаться только один раз.');
+    } else if (isRepeatedGuess(input.value) && isValidGuess(input.value, state.settings.length, state.settings.base)) {
+      showError('Эта комбинация уже встречалась. Попробуйте другую.');
     } else {
       clearError();
     }
@@ -77,14 +81,12 @@ export const renderGameScreen = (
 
   button.addEventListener('click', () => {
     if (!isValidGuess(input.value, state.settings.length, state.settings.base)) {
-      showError('Ритуал нарушен. Что-то со знаками и их последовательностью.');
+      showError('Последовательность не завершена или содержит неверные знаки.');
       return;
     }
 
-    const isRepeat = state.history.some((entry) => entry.guess.toLowerCase() === input.value.toLowerCase());
-
-    if (isRepeat) {
-      showError('Этот ритуал уже проводился. Повтор не имеет силы.');
+    if (isRepeatedGuess(input.value)) {
+      showError('Эта комбинация уже встречалась. Попробуйте другую.');
       return;
     }
 
