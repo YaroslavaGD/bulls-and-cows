@@ -2,6 +2,7 @@ import { createDigitValidator } from '../core/createDigitValidator.js';
 import type { GameState } from '../core/types.js';
 import { el } from './dom.js';
 import { renderHistory } from './history-view.js';
+import { renderRitualCircle } from './ritual-circle.js';
 
 export const renderGameScreen = (
   state: GameState,
@@ -17,8 +18,25 @@ export const renderGameScreen = (
     maxLength: state.settings.length,
   });
 
+  let circle: HTMLDivElement;
+
+  const updateInput = (value: string): void => {
+    input.value = [...value].filter(isDigit).join('').slice(0, state.settings.length);
+
+    const next = renderRitualCircle(state.settings.base, input.value, (digit) => {
+      updateInput(input.value + digit);
+    });
+
+    circle.replaceWith(next);
+    circle = next;
+  };
+
+  circle = renderRitualCircle(state.settings.base, '', (digit) => {
+    updateInput(input.value + digit);
+  });
+
   input.addEventListener('input', () => {
-    input.value = [...input.value].filter(isDigit).join('');
+    updateInput(input.value);
   });
 
   const button = el('button', {
@@ -55,6 +73,7 @@ export const renderGameScreen = (
   return el(
     'main',
     { className: 'screen screen--game' },
+    circle,
     input,
     button,
     renderHistory(state.history),
