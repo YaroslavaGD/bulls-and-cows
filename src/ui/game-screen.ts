@@ -37,11 +37,27 @@ export const renderGameScreen = (
     return new Set(digits).size !== digits.length;
   };
 
+  const hasInvalidDigits = (value: string): boolean => [...value].some((digit) => !isDigit(digit));
+
   const isRepeatedGuess = (value: string): boolean =>
     state.history.some((entry) => entry.guess.toLowerCase() === value.toLowerCase());
 
   const canSubmit = (value: string): boolean =>
     isValidGuess(value, state.settings.length, state.settings.base) && !isRepeatedGuess(value);
+
+  const validateInput = (value: string): void => {
+    if (hasDuplicateDigits(value)) {
+      showError('Каждый знак может встречаться только один раз.');
+    } else if (hasInvalidDigits(value)) {
+      showError('Некоторые знаки не принадлежат выбранной системе.');
+    } else if (value.length < state.settings.length) {
+      showError('Последовательность ещё не завершена.');
+    } else if (isRepeatedGuess(value)) {
+      showError('Эта комбинация уже встречалась. Попробуйте другую.');
+    } else {
+      clearError();
+    }
+  };
 
   const button = el('button', {
     type: 'button',
@@ -54,13 +70,7 @@ export const renderGameScreen = (
   const updateInput = (value: string): void => {
     input.value = [...value].filter(isDigit).join('').slice(0, state.settings.length);
 
-    if (hasDuplicateDigits(input.value)) {
-      showError('Каждый знак может встречаться только один раз.');
-    } else if (isRepeatedGuess(input.value) && isValidGuess(input.value, state.settings.length, state.settings.base)) {
-      showError('Эта комбинация уже встречалась. Попробуйте другую.');
-    } else {
-      clearError();
-    }
+    validateInput(input.value);
 
     const next = renderRitualCircle(state.settings.base, input.value, (digit) => {
       updateInput(input.value + digit);
@@ -80,13 +90,8 @@ export const renderGameScreen = (
   });
 
   button.addEventListener('click', () => {
-    if (!isValidGuess(input.value, state.settings.length, state.settings.base)) {
-      showError('Последовательность не завершена или содержит неверные знаки.');
-      return;
-    }
-
-    if (isRepeatedGuess(input.value)) {
-      showError('Эта комбинация уже встречалась. Попробуйте другую.');
+    if (!canSubmit(input.value)) {
+      validateInput(input.value);
       return;
     }
 
