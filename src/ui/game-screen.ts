@@ -32,10 +32,21 @@ export const renderGameScreen = (
     error.textContent = '';
   };
 
+  const hasDuplicateDigits = (value: string): boolean => {
+    const digits = [...value.toLowerCase()];
+    return new Set(digits).size !== digits.length;
+  };
+
   let circle: HTMLDivElement;
 
   const updateInput = (value: string): void => {
     input.value = [...value].filter(isDigit).join('').slice(0, state.settings.length);
+
+    if (hasDuplicateDigits(input.value)) {
+      showError('Каждый знак может встречаться только один раз.');
+    } else {
+      clearError();
+    }
 
     const next = renderRitualCircle(state.settings.base, input.value, (digit) => {
       updateInput(input.value + digit);
@@ -51,7 +62,6 @@ export const renderGameScreen = (
 
   input.addEventListener('input', () => {
     updateInput(input.value);
-    clearError();
   });
 
   const button = el('button', {
@@ -59,6 +69,7 @@ export const renderGameScreen = (
     className: 'button button--primary',
     textContent: 'ПОПЫТАТЬСЯ ПРИЗВАТЬ',
   });
+
   button.addEventListener('click', () => {
     if (!isValidGuess(input.value, state.settings.length, state.settings.base)) {
       showError('Ритуал нарушен. Что-то со знаками и их последовательностью.');
