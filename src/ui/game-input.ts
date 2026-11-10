@@ -64,6 +64,7 @@ export const renderGameInput = (
       clearError();
     }
   };
+  const victoryGuess = isWon ? (state.history[state.history.length - 1]?.guess ?? '') : '';
 
   let circle: HTMLDivElement;
 
@@ -91,7 +92,7 @@ export const renderGameInput = (
 
   circle = renderRitualCircle(
     state.settings.base,
-    '',
+    victoryGuess,
     (digit) => {
       updateInput(input.value + digit);
     },
