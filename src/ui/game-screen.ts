@@ -11,6 +11,14 @@ export const renderGameScreen = (
 ): HTMLElement => {
   const isWon = state.status === 'won';
 
+  const demon = isWon
+    ? el('img', {
+        className: 'game__demon',
+        src: './dist/images/demon.webp',
+        alt: 'Призванный демон',
+      })
+    : null;
+
   const baseNames: Record<number, string> = {
     2: 'BIN',
     8: 'OCT',
@@ -56,6 +64,7 @@ export const renderGameScreen = (
   return el(
     'main',
     { className: 'screen screen--game' },
+    ...(demon ? [demon] : []),
     header,
     renderGameInput(state, onSubmit),
     renderHistory(state.history),
