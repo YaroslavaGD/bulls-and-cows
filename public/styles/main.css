@@ -291,7 +291,6 @@ select {
   inset: 0;
   transform: none;
   transform-style: preserve-3d;
-  transition: transform 1s ease;
 }
 
 .ritual__plane::before {
@@ -307,7 +306,17 @@ select {
 }
 
 .ritual--victory .ritual__plane {
-  transform: rotateX(55deg);
+  animation: ritual-tilt 1.4s ease-in-out forwards;
+}
+
+@keyframes ritual-tilt {
+  from {
+    transform: rotateX(0deg);
+  }
+
+  to {
+    transform: rotateX(55deg);
+  }
 }
 
 .ritual__route {
@@ -359,7 +368,17 @@ select {
 }
 
 .ritual--victory .ritual__button {
-  transform: translate(-50%, -50%) translateZ(8px) rotateX(-55deg);
+  animation: node-counter-tilt 1.4s ease-in-out forwards;
+}
+
+@keyframes node-counter-tilt {
+  from {
+    transform: translate(-50%, -50%) translateZ(0) rotateX(0deg);
+  }
+
+  to {
+    transform: translate(-50%, -50%) translateZ(24px) rotateX(-55deg);
+  }
 }
 
 /* =========================
@@ -378,19 +397,30 @@ select {
   opacity: 0;
   pointer-events: none;
   transform: translate(-50%, -100%);
-  animation: demon-appear 1.5s ease forwards;
+  animation: demon-appear 2s ease 1s forwards;
 }
 
 @keyframes demon-appear {
   from {
     opacity: 0;
-    transform: translate(-50%, -100%) scale(0.85);
+    transform: translate(-50%, -92%);
+    clip-path: inset(100% -20% 0 -20%);
   }
 
   to {
     opacity: 1;
-    transform: translate(-50%, -100%) scale(1);
+    transform: translate(-50%, -100%);
+    clip-path: inset(-30% -30% -30% -30%);
     filter: drop-shadow(0 0 35px rgb(242 38 82 / 45%));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ritual--victory .ritual__plane,
+  .ritual--victory .ritual__button,
+  .game__demon {
+    animation-duration: 0.01s;
+    animation-delay: 0s;
   }
 }
 
