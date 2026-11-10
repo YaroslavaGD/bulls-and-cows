@@ -266,6 +266,7 @@ select {
 ========================= */
 
 .game__stage {
+  --ritual-shift: 25%;
   position: relative;
   width: min(100%, 460px);
   aspect-ratio: 1;
@@ -323,11 +324,11 @@ select {
 
 @keyframes ritual-tilt {
   from {
-    transform: rotateX(0deg);
+    transform: translateY(0) rotateX(0deg);
   }
 
   to {
-    transform: rotateX(55deg);
+    transform: translateY(var(--ritual-shift)) rotateX(55deg);
   }
 }
 
@@ -399,7 +400,7 @@ select {
 
 .game__demon {
   position: absolute;
-  top: 70%;
+  top: calc(70% + var(--ritual-shift));
   left: 50%;
   z-index: 2;
   width: 130%;
@@ -714,6 +715,17 @@ select {
 
   .game__actions {
     justify-content: center;
+  }
+
+  .game__stage {
+    --ritual-shift: 15%;
+    margin-top: 28vw;
+    margin-bottom: 8vw;
+  }
+
+  .game__demon {
+    width: 100%;
+    height: 115%;
   }
 }
 
