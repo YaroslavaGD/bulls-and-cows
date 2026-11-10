@@ -75,14 +75,7 @@ export const renderGameInput = (
 
     validateInput(input.value, hasInvalid);
 
-    const next = renderRitualCircle(
-      state.settings.base,
-      input.value,
-      (digit) => {
-        updateInput(input.value + digit);
-      },
-      isWon,
-    );
+    const next = renderRitualCircle(state.settings.base, input.value, handleDigitClick, isWon);
 
     circle.replaceWith(next);
     circle = next;
@@ -90,14 +83,12 @@ export const renderGameInput = (
     button.disabled = isWon || !canSubmit(input.value);
   };
 
-  circle = renderRitualCircle(
-    state.settings.base,
-    victoryGuess,
-    (digit) => {
-      updateInput(input.value + digit);
-    },
-    isWon,
-  );
+  const handleDigitClick = (digit: string): void => {
+    if (isWon) return;
+    updateInput(input.value + digit);
+  };
+
+  circle = renderRitualCircle(state.settings.base, victoryGuess, handleDigitClick, isWon);
 
   const stage = el(
     'div',
