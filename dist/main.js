@@ -5,7 +5,7 @@ import { addRecord, loadRecords, saveRecords } from './storage/records.js';
 import { renderGameScreen } from './ui/game-screen.js';
 import { renderMenuScreen } from './ui/menu-screen.js';
 import { renderRecordsScreen } from './ui/records-screen.js';
-let state = null; // null - game menu
+let state = null; // null - menu, GameState - game
 const startGame = (settings) => {
     state = createGame(settings, generateSecret(settings.length, settings.base), Date.now());
     render();
