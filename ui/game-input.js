@@ -57,21 +57,22 @@ export const renderGameInput = (state, onSubmit) => {
         const hasInvalid = hasInvalidDigits(value);
         input.value = [...value].filter(isDigit).join('').slice(0, state.settings.length);
         validateInput(input.value, hasInvalid);
-        const next = renderRitualCircle(state.settings.base, input.value, (digit) => {
-            updateInput(input.value + digit);
-        }, isWon);
+        const next = renderRitualCircle(state.settings.base, input.value, handleDigitClick, isWon);
         circle.replaceWith(next);
         circle = next;
         button.disabled = isWon || !canSubmit(input.value);
     };
-    circle = renderRitualCircle(state.settings.base, victoryGuess, (digit) => {
+    const handleDigitClick = (digit) => {
+        if (isWon)
+            return;
         updateInput(input.value + digit);
-    }, isWon);
+    };
+    circle = renderRitualCircle(state.settings.base, victoryGuess, handleDigitClick, isWon);
     const stage = el('div', { className: 'game__stage' }, ...(isWon
         ? [
             el('img', {
                 className: 'game__demon',
-                src: './dist/images/demon.webp',
+                src: './images/demon.webp',
                 alt: 'Призванный демон',
             }),
         ]
