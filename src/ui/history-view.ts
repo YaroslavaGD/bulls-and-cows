@@ -12,7 +12,7 @@ export const renderHistory = (history: HistoryEntry[]): HTMLElement => {
     el(
       'ul',
       { className: 'game__history-list' },
-      ...history.map((entry) =>
+      ...history.reverse().map((entry) =>
         el(
           'li',
           { className: 'game__history-entry' },
