@@ -406,10 +406,10 @@ select {
   width: 100%;
   max-width: 400px;
   justify-self: center;
-  padding: 24px;
-  border: 1px solid var(--color-border);
-  background: rgb(23 18 25 / 88%);
-  box-shadow: 0 0 30px rgb(0 0 0 / 25%);
+  padding: 0;
+  border: none;
+  background: transparent;
+  box-shadow: none;
 }
 
 .game__controls {
@@ -461,9 +461,11 @@ select {
   width: 100%;
   height: 280px;
   flex: 0 0 280px;
-  padding: 16px 20px;
-  border: 1px solid var(--color-border);
-  background: var(--color-bg);
+  padding: 12px 0;
+  border: none;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  background: transparent;
   overflow-y: auto;
 }
 
@@ -511,12 +513,137 @@ select {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 10px;
+  gap: 8px;
   width: 100%;
 }
 
 .game__actions .button {
   width: 100%;
+}
+
+/* =========================
+   RECORDS SCREEN
+========================= */
+
+.screen--records {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  width: min(100%, 900px);
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+.records__header {
+  text-align: center;
+}
+
+.records__eyebrow {
+  margin: 0 0 10px;
+  color: var(--color-glow);
+  font-size: 11px;
+  letter-spacing: 0.3em;
+}
+
+.records__title {
+  margin: 0;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+}
+
+.records__subtitle {
+  margin: 10px 0 0;
+  color: var(--color-muted);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+}
+
+.records__panel {
+  width: 100%;
+  max-width: 680px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+}
+
+.records__section-title {
+  margin: 0 0 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-muted);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+}
+
+.records__list {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.records__item {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 14px 4px;
+  border: none;
+  border-bottom: 1px solid var(--color-border);
+  background: transparent;
+}
+
+.records__item--best {
+  border-color: var(--color-border);
+  background: transparent;
+}
+
+.records__rank {
+  color: var(--color-muted);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px;
+}
+
+.records__item--best .records__rank {
+  color: var(--color-glow);
+}
+
+.records__details {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  min-width: 0;
+}
+
+.records__base {
+  color: var(--color-glow);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+}
+
+.records__detail {
+  color: var(--color-muted);
+  font-size: 12px;
+}
+
+.records__empty {
+  margin: 0;
+  padding: 28px 12px;
+  color: var(--color-muted);
+  font-size: 13px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.records__close {
+  width: min(100%, 240px);
 }
 
 /* =========================
@@ -545,5 +672,24 @@ select {
 
   .game__actions {
     justify-content: center;
+  }
+}
+
+@media (max-width: 520px) {
+  .screen--records {
+    padding: 32px 16px;
+  }
+
+  .records__panel {
+    padding: 16px;
+  }
+
+  .records__item {
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .records__details {
+    gap: 8px 12px;
   }
 }
