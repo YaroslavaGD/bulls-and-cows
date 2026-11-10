@@ -4,7 +4,10 @@ import type { GameState } from '../core/types.js';
 import { el } from './dom.js';
 import { renderRitualCircle } from './ritual-circle.js';
 
-export const renderGameInput = (state: GameState, onSubmit: (guess: string) => void): DocumentFragment => {
+export const renderGameInput = (
+  state: GameState,
+  onSubmit: (guess: string) => void,
+): { stage: HTMLDivElement; controls: HTMLDivElement } => {
   const isDigit = createDigitValidator(state.settings.base);
   const isWon = state.status === 'won';
 
@@ -65,8 +68,6 @@ export const renderGameInput = (state: GameState, onSubmit: (guess: string) => v
   let circle: HTMLDivElement;
 
   const updateInput = (value: string): void => {
-    input.value = [...value].filter(isDigit).join('').slice(0, state.settings.length);
-
     const hasInvalid = hasInvalidDigits(value);
 
     input.value = [...value].filter(isDigit).join('').slice(0, state.settings.length);
@@ -128,8 +129,7 @@ export const renderGameInput = (state: GameState, onSubmit: (guess: string) => v
 
   button.disabled = isWon || !canSubmit(input.value);
 
-  const fragment = document.createDocumentFragment();
-  fragment.append(stage, input, error, button);
+  const controls = el('div', { className: 'game__controls' }, input, error, button);
 
-  return fragment;
+  return { stage, controls };
 };

@@ -34,6 +34,10 @@ select {
   padding: 32px;
 }
 
+/* =========================
+   MENU
+========================= */
+
 .screen--menu {
   display: flex;
   flex-direction: column;
@@ -67,7 +71,6 @@ select {
   margin: 0;
   padding: 0;
   background: transparent;
-  /* accent-color: var(--color-glow); */
   cursor: pointer;
 }
 
@@ -166,7 +169,10 @@ select {
   color: var(--color-text);
 }
 
-/* Base button */
+/* =========================
+   BUTTONS
+========================= */
+
 .button {
   padding: 12px 24px;
   border: 1px solid var(--color-border);
@@ -192,15 +198,13 @@ select {
   outline-offset: 3px;
 }
 
-/* Primary button */
 .button--primary {
-  border-color: var(--color-primary);
   min-width: 260px;
   padding: 14px 24px;
+  border-color: var(--color-primary);
   letter-spacing: 0.16em;
 }
 
-/* Secondary button */
 .button--secondary {
   color: var(--color-muted);
 }
@@ -216,37 +220,61 @@ select {
   color: var(--color-text);
 }
 
+/* =========================
+   GAME LAYOUT
+========================= */
+
 .screen--game {
   position: relative;
   isolation: isolate;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+  grid-template-rows: auto 1fr;
   align-items: center;
-  justify-content: center;
-  gap: 20px;
+  column-gap: clamp(40px, 7vw, 100px);
+  row-gap: 32px;
+  width: min(100%, 1280px);
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 40px clamp(24px, 5vw, 72px);
 }
 
-.game__input {
-  width: 240px;
-  padding: 14px 18px;
-  border: 1px solid var(--color-border);
-  border-radius: 4px;
-  outline: none;
-  background: var(--color-panel);
-  color: var(--color-glow);
-  font-family: monospace;
-  font-size: 28px;
-  letter-spacing: 12px;
+.game__header {
+  grid-column: 1 / -1;
   text-align: center;
-  box-shadow: 0 0 16px rgb(242 38 82 / 10%);
-  transition:
-    border-color 180ms ease,
-    box-shadow 180ms ease;
+  margin: 0 0 8px;
 }
 
-.game__input:focus {
-  border-color: var(--color-glow);
-  box-shadow: 0 0 20px rgb(242 38 82 / 25%);
+.game__title {
+  margin: 0;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: var(--color-text);
+}
+
+.game__subtitle {
+  margin: 8px 0 0;
+  color: var(--color-muted);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+}
+
+/* =========================
+   RITUAL STAGE
+========================= */
+
+.game__stage {
+  position: relative;
+  width: min(100%, 460px);
+  aspect-ratio: 1;
+  justify-self: center;
+}
+
+.game__stage .ritual {
+  width: 100%;
+  z-index: 1;
 }
 
 .ritual {
@@ -334,41 +362,103 @@ select {
   transform: translate(-50%, -50%) translateZ(8px) rotateX(-55deg);
 }
 
+/* =========================
+   DEMON
+========================= */
+
+.game__demon {
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  z-index: 2;
+  width: 130%;
+  height: 130%;
+  object-fit: contain;
+  object-position: center bottom;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -100%);
+  animation: demon-appear 1.5s ease forwards;
+}
+
+@keyframes demon-appear {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -100%) scale(0.85);
+  }
+
+  to {
+    opacity: 0.85;
+    transform: translate(-50%, -100%) scale(1);
+    filter: drop-shadow(0 0 35px rgb(242 38 82 / 45%));
+  }
+}
+
+/* =========================
+   GAME CONTROLS
+========================= */
+
+.game__sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 24px;
+  width: 100%;
+  max-width: 400px;
+  justify-self: center;
+}
+
+.game__controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.game__input {
+  width: 240px;
+  padding: 14px 18px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  outline: none;
+  background: var(--color-panel);
+  color: var(--color-glow);
+  font-family: monospace;
+  font-size: 28px;
+  letter-spacing: 12px;
+  text-align: center;
+  box-shadow: 0 0 16px rgb(242 38 82 / 10%);
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.game__input:focus {
+  border-color: var(--color-glow);
+  box-shadow: 0 0 20px rgb(242 38 82 / 25%);
+}
+
 .game__error {
   min-height: 18px;
-  margin: -12px 0 0;
+  margin: 0;
   color: var(--color-muted);
   font-size: 12px;
   letter-spacing: 0.04em;
   text-align: center;
 }
 
-.game__header {
-  text-align: center;
-  margin-bottom: 8px;
-}
-
-.game__title {
-  margin: 0;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(2rem, 4vw, 2.8rem);
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  color: var(--color-text);
-}
-
-.game__subtitle {
-  margin: 8px 0 0;
-  color: var(--color-muted);
-  font-size: 11px;
-  letter-spacing: 0.2em;
-}
+/* =========================
+   HISTORY
+========================= */
 
 .game__history {
-  width: min(100%, 400px);
+  width: 100%;
+  max-height: 380px;
   padding: 16px 20px;
   border: 1px solid var(--color-border);
   background: var(--color-panel);
+  overflow-y: auto;
 }
 
 .game__history-title {
@@ -407,61 +497,43 @@ select {
   font-size: 11px;
 }
 
+/* =========================
+   GAME ACTIONS
+========================= */
+
 .game__actions {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   flex-wrap: wrap;
   gap: 12px;
 }
 
-.game__stage {
-  position: relative;
-  width: min(90vw, 400px);
-  aspect-ratio: 1;
-}
+/* =========================
+   RESPONSIVE
+========================= */
 
-.game__stage .ritual {
-  width: 100%;
-}
-
-.game__demon {
-  position: absolute;
-  top: 70%;
-  left: 50%;
-  z-index: 2;
-  width: 130%;
-  height: 130%;
-  object-fit: contain;
-  object-position: center bottom;
-  opacity: 0;
-  pointer-events: none;
-  transform: translate(-50%, -100%);
-  animation: demon-appear 1.5s ease forwards;
-}
-
-.game__stage .ritual {
-  z-index: 1;
-}
-
-.screen--game:has(.game__demon) {
-  position: relative;
-  isolation: isolate;
-}
-
-.screen--game > :not(.game__demon) {
-  position: relative;
-  z-index: 1;
-}
-
-@keyframes demon-appear {
-  from {
-    opacity: 0;
-    transform: translate(-50%, -100%) scale(0.85);
+@media (max-width: 800px) {
+  .screen--game {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
+    gap: 28px;
+    padding: 28px 16px;
   }
 
-  to {
-    opacity: 100;
-    transform: translate(-50%, -100%) scale(1);
+  .game__header {
+    grid-column: 1;
+  }
+
+  .game__stage {
+    width: min(90vw, 400px);
+  }
+
+  .game__sidebar {
+    max-width: 420px;
+  }
+
+  .game__actions {
+    justify-content: center;
   }
 }
