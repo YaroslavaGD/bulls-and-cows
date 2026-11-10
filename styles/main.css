@@ -217,6 +217,8 @@ select {
 }
 
 .screen--game {
+  position: relative;
+  isolation: isolate;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -410,14 +412,33 @@ select {
   gap: 12px;
 }
 
+.game__stage {
+  position: relative;
+  width: min(90vw, 400px);
+  aspect-ratio: 1;
+}
+
+.game__stage .ritual {
+  width: 100%;
+}
+
 .game__demon {
   position: absolute;
-  width: min(70vw, 520px);
-  height: auto;
-  object-fit: contain;
+  top: 70%;
+  left: 50%;
   z-index: 0;
+  width: 130%;
+  height: 130%;
+  object-fit: contain;
+  object-position: center bottom;
   opacity: 0;
   pointer-events: none;
+  transform: translate(-50%, -100%);
+  animation: demon-appear 1.5s ease forwards;
+}
+
+.game__stage .ritual {
+  z-index: 1;
 }
 
 .screen--game:has(.game__demon) {
@@ -425,20 +446,19 @@ select {
   isolation: isolate;
 }
 
-.game__demon {
-  animation: demon-appear 1.5s ease forwards;
+.screen--game > :not(.game__demon) {
+  position: relative;
+  z-index: 1;
 }
 
 @keyframes demon-appear {
   from {
     opacity: 0;
-    transform: scale(0.85);
-    filter: drop-shadow(0 0 0 transparent);
+    transform: translate(-50%, -100%) scale(0.85);
   }
 
   to {
     opacity: 0.85;
-    transform: scale(1);
-    filter: drop-shadow(0 0 35px rgb(242 38 82 / 45%));
+    transform: translate(-50%, -100%) scale(1);
   }
 }

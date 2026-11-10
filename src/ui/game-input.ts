@@ -97,6 +97,21 @@ export const renderGameInput = (state: GameState, onSubmit: (guess: string) => v
     isWon,
   );
 
+  const stage = el(
+    'div',
+    { className: 'game__stage' },
+    ...(isWon
+      ? [
+          el('img', {
+            className: 'game__demon',
+            src: './dist/images/demon.webp',
+            alt: 'Призванный демон',
+          }),
+        ]
+      : []),
+    circle,
+  );
+
   input.addEventListener('input', () => {
     updateInput(input.value);
   });
@@ -114,7 +129,7 @@ export const renderGameInput = (state: GameState, onSubmit: (guess: string) => v
   button.disabled = isWon || !canSubmit(input.value);
 
   const fragment = document.createDocumentFragment();
-  fragment.append(circle, input, error, button);
+  fragment.append(stage, input, error, button);
 
   return fragment;
 };
