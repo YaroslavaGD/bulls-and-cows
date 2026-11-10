@@ -7,7 +7,9 @@ import { renderMenuScreen } from './ui/menu-screen.js';
 import { renderRecordsScreen } from './ui/records-screen.js';
 let state = null; // null - menu, GameState - game
 const startGame = (settings) => {
-    state = createGame(settings, generateSecret(settings.length, settings.base), Date.now());
+    const secret = generateSecret(settings.length, settings.base);
+    console.log('secret:', secret); // TODO: delete it
+    state = createGame(settings, secret, Date.now());
     render();
 };
 const backToMenu = () => {
