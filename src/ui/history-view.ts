@@ -34,7 +34,7 @@ export const renderHistory = (history: HistoryEntry[]): HTMLElement => {
           el(
             'span',
             { className: 'game__history-result' },
-            renderScore('./images/bull.webp', entry.bulls, 'Бык: знак на своём месте'),
+            renderScore('./images/bull2.webp', entry.bulls, 'Бык: знак на своём месте'),
             renderScore('./images/cow.webp', entry.cows, 'Корова: знак верный, но место чужое'),
           ),
         ),
