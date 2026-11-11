@@ -101,7 +101,7 @@ export const renderGameInput = (
       ? [
           el('img', {
             className: 'game__demon',
-            src: './images/demon.webp',
+            src: './images/demon2.webp',
             alt: 'Призванный демон',
           }),
         ]
