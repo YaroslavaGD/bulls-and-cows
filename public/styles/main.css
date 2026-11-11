@@ -170,6 +170,28 @@ select {
   color: var(--color-text);
 }
 
+.menu__count {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin: 8px 0;
+}
+
+.menu__count-value {
+  color: var(--color-glow);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  letter-spacing: 0.08em;
+  text-shadow: 0 0 12px rgb(242 38 82 / 35%);
+}
+
+.menu__count-label {
+  color: var(--color-muted);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+}
+
 /* =========================
    BUTTONS
 ========================= */

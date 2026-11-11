@@ -12,7 +12,7 @@ export const renderRecords = (records: RecordEntry[]): HTMLElement => {
   if (records.length === 0) {
     return el('p', {
       className: 'records__empty',
-      textContent: 'Летопись пока пуста. Первый призыв ещё впереди.',
+      textContent: 'Книга пока пуста. Первый призыв ещё впереди.',
     });
   }
 
@@ -29,11 +29,11 @@ export const renderRecords = (records: RecordEntry[]): HTMLElement => {
         }),
         el('span', {
           className: 'records__detail',
-          textContent: `${record.length} знака`,
+          textContent: `знаков: ${record.length}`,
         }),
         el('span', {
           className: 'records__detail',
-          textContent: `${record.attempts} попыток`,
+          textContent: `попыток: ${record.attempts}`,
         }),
         el('span', {
           className: 'records__detail',

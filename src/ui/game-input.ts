@@ -59,7 +59,7 @@ export const renderGameInput = (
     } else if (value.length < state.settings.length) {
       showError('Последовательность ещё не завершена.');
     } else if (isRepeatedGuess(value)) {
-      showError('Эта комбинация уже встречалась. Попробуйте другую.');
+      showError('Эту последовательность вы уже пробовали.');
     } else {
       clearError();
     }

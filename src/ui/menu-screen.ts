@@ -67,7 +67,16 @@ export const renderMenuScreen = (onStart: (settings: GameSettings) => void, onSh
     value: '2',
   });
 
-  const info = el('p');
+  const infoNumber = el('span', { className: 'menu__count-value' });
+  const infoLabel = el('span', { className: 'menu__count-label', textContent: 'ВОЗМОЖНЫХ СИМВОЛОВ ПРИЗЫВА' });
+  const info = el(
+    'p',
+    {
+      className: 'menu__count',
+    },
+    infoLabel,
+    infoNumber,
+  );
 
   const updateSliderProgress = (slider: HTMLInputElement): void => {
     const min = Number(slider.min);
@@ -98,7 +107,7 @@ export const renderMenuScreen = (onStart: (settings: GameSettings) => void, onSh
       option.classList.toggle('is-active', index === Number(lengthSlider.value));
     });
 
-    info.textContent = `Возможных комбинаций: ${countPossibleSecrets(Number(length), base)}`;
+    infoNumber.textContent = `${countPossibleSecrets(Number(length), base)}`;
     updateSliderProgress(baseSlider);
     updateSliderProgress(lengthSlider);
   };
@@ -139,7 +148,7 @@ export const renderMenuScreen = (onStart: (settings: GameSettings) => void, onSh
   const records = el('button', {
     type: 'button',
     className: 'button button--secondary',
-    textContent: 'РЕКОРДЫ',
+    textContent: 'КНИГА РЕКОРДОВ',
   });
   records.addEventListener('click', onShowRecords);
 

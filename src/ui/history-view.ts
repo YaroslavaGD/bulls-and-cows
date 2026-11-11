@@ -7,7 +7,7 @@ export const renderHistory = (history: HistoryEntry[]): HTMLElement => {
     { className: 'game__history' },
     el('h2', {
       className: 'game__history-title',
-      textContent: 'ИСТОРИЯ ПРИЗЫВОВ',
+      textContent: 'ЖУРНАЛ РИТУАЛА',
     }),
     el(
       'ul',
@@ -22,7 +22,7 @@ export const renderHistory = (history: HistoryEntry[]): HTMLElement => {
           }),
           el('span', {
             className: 'game__history-result',
-            textContent: `${entry.bulls} bulls · ${entry.cows} cows`,
+            textContent: `${entry.bulls} B · ${entry.cows} C`,
           }),
         ),
       ),

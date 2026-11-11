@@ -24,7 +24,7 @@ export const renderRecordsScreen = (records: RecordEntry[], onClose: () => void)
     }),
     el('p', {
       className: 'records__subtitle',
-      textContent: 'Летопись завершённых призывов',
+      textContent: 'Завершённые призывы',
     }),
   );
 

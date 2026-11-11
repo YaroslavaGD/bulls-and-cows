@@ -27,13 +27,13 @@ export const renderGameScreen = (
     }),
     el('p', {
       className: 'game__subtitle',
-      textContent: `${baseNames[state.settings.base]} · ДЛИНА ${state.settings.length}`,
+      textContent: `${baseNames[state.settings.base]} · ЗНАКОВ: ${state.settings.length}`,
     }),
   );
 
   const message = isWon
     ? el('p', {
-        textContent: `Победа! Попыток: ${state.history.length}, время: ${Math.round(((state.finishedAt ?? 0) - state.startedAt) / 1000)} c`,
+        textContent: `Печать восстановлена. Попыток: ${state.history.length}, время: ${Math.round(((state.finishedAt ?? 0) - state.startedAt) / 1000)} с`,
       })
     : null;
 
@@ -47,7 +47,7 @@ export const renderGameScreen = (
   const records = el('button', {
     type: 'button',
     className: 'button button--secondary',
-    textContent: 'РЕКОРДЫ',
+    textContent: 'КНИГА РЕКОРДОВ',
   });
   records.addEventListener('click', onShowRecords);
 
