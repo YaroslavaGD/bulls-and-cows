@@ -200,7 +200,7 @@ select {
 .menu__title {
   margin: 0;
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(2.4rem, 4vw, 3.2rem);
+  font-size: clamp(2rem, 4vw, 3.2rem);
   font-weight: 500;
   letter-spacing: 0.12em;
   text-align: center;
@@ -519,6 +519,35 @@ select {
 }
 
 /* =========================
+   FROG
+========================= */
+.game__frog {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  width: 30%;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0.8);
+}
+
+.game__frog.is-visible {
+  animation: frog-pop 1.2s ease forwards;
+}
+
+@keyframes frog-pop {
+  15%,
+  70% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+}
+/* =========================
    GAME CONTROLS
 ========================= */
 
@@ -592,6 +621,21 @@ select {
   background: transparent;
   overflow-y: auto;
   scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+.game__history::-webkit-scrollbar {
+  width: 6px;
+}
+
+.game__history::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+
+.game__history::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
 }
 
 .game__history-title {
@@ -847,6 +891,7 @@ select {
   .ritual__line--removing,
   .victory__char,
   .victory__result,
+  .game__frog.is-visible,
   .game__actions--victory,
   .game__demon {
     animation-duration: 0.01s;
@@ -871,7 +916,7 @@ select {
   }
 
   .game__stage {
-    width: min(90vw, 400px);
+    width: min(78vw, 400px);
   }
 
   .game__sidebar {
@@ -910,5 +955,14 @@ select {
 
   .records__details {
     gap: 8px 12px;
+  }
+
+  .ritual__button {
+    width: 35px;
+    height: 35px;
+  }
+
+  .game__stage {
+    width: min(75vw, 400px);
   }
 }
