@@ -2,14 +2,13 @@ import { createGame, submitGuess } from './core/gameState.js';
 import { generateSecret } from './core/generateSecret.js';
 import { isValidGuess } from './core/isValidGuess.js';
 import { addRecord, loadRecords, saveRecords } from './storage/records.js';
+import { focusGameInput } from './ui/game-input.js';
 import { renderGameScreen } from './ui/game-screen.js';
 import { renderMenuScreen } from './ui/menu-screen.js';
 import { renderRecordsScreen } from './ui/records-screen.js';
 let state = null; // null - menu, GameState - game
 const startGame = (settings) => {
-    const secret = generateSecret(settings.length, settings.base);
-    console.log('secret:', secret); // TODO: delete it
-    state = createGame(settings, secret, Date.now());
+    state = createGame(settings, generateSecret(settings.length, settings.base), Date.now());
     render();
 };
 const backToMenu = () => {
@@ -47,5 +46,6 @@ const render = () => {
     document.body.replaceChildren(state === null
         ? renderMenuScreen(startGame, toggleRecords)
         : renderGameScreen(state, handleSubmit, backToMenu, toggleRecords));
+    focusGameInput();
 };
 render();

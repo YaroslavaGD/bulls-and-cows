@@ -15,7 +15,7 @@ export const renderRecordsScreen = (records, onClose) => {
         textContent: 'КНИГА РЕКОРДОВ',
     }), el('p', {
         className: 'records__subtitle',
-        textContent: 'Летопись завершённых призывов',
+        textContent: 'Завершённые призывы',
     }));
     const content = el('section', { className: 'records__panel' }, el('h2', {
         className: 'records__section-title',

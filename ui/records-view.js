@@ -9,7 +9,7 @@ export const renderRecords = (records) => {
     if (records.length === 0) {
         return el('p', {
             className: 'records__empty',
-            textContent: 'Летопись пока пуста. Первый призыв ещё впереди.',
+            textContent: 'Книга пока пуста. Первый призыв ещё впереди.',
         });
     }
     return el('ol', { className: 'records__list' }, ...records.map((record, index) => {
@@ -18,10 +18,10 @@ export const renderRecords = (records) => {
             textContent: BASE_NAMES[record.base] ?? String(record.base),
         }), el('span', {
             className: 'records__detail',
-            textContent: `${record.length} знака`,
+            textContent: `знаков: ${record.length}`,
         }), el('span', {
             className: 'records__detail',
-            textContent: `${record.attempts} попыток`,
+            textContent: `попыток: ${record.attempts}`,
         }), el('span', {
             className: 'records__detail',
             textContent: `${Math.round(record.timeMs / 1000)} с`,

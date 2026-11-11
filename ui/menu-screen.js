@@ -44,7 +44,11 @@ export const renderMenuScreen = (onStart, onShowRecords) => {
         step: '1',
         value: '2',
     });
-    const info = el('p');
+    const infoNumber = el('span', { className: 'menu__count-value' });
+    const infoLabel = el('span', { className: 'menu__count-label', textContent: 'ВОЗМОЖНЫХ СИМВОЛОВ ПРИЗЫВА' });
+    const info = el('p', {
+        className: 'menu__count',
+    }, infoLabel, infoNumber);
     const updateSliderProgress = (slider) => {
         const min = Number(slider.min);
         const max = Number(slider.max);
@@ -66,7 +70,7 @@ export const renderMenuScreen = (onStart, onShowRecords) => {
         lengthOptions.querySelectorAll('.menu__option').forEach((option, index) => {
             option.classList.toggle('is-active', index === Number(lengthSlider.value));
         });
-        info.textContent = `Возможных комбинаций: ${countPossibleSecrets(Number(length), base)}`;
+        infoNumber.textContent = `${countPossibleSecrets(Number(length), base)}`;
         updateSliderProgress(baseSlider);
         updateSliderProgress(lengthSlider);
     };
@@ -100,7 +104,7 @@ export const renderMenuScreen = (onStart, onShowRecords) => {
     const records = el('button', {
         type: 'button',
         className: 'button button--secondary',
-        textContent: 'РЕКОРДЫ',
+        textContent: 'КНИГА РЕКОРДОВ',
     });
     records.addEventListener('click', onShowRecords);
     return el('main', { className: 'screen screen--menu' }, title, baseLabel, baseOptions, baseSlider, lengthLabel, lengthOptions, lengthSlider, info, start, records);
