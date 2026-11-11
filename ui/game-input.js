@@ -40,15 +40,18 @@ export const renderGameInput = (state, onSubmit) => {
     const validateInput = (value, hasInvalid) => {
         if (hasInvalid) {
             showError('Некоторые знаки не принадлежат выбранной системе.');
+            showFrog();
         }
         else if (hasDuplicateDigits(value)) {
             showError('Каждый знак может встречаться только один раз.');
+            showFrog();
         }
         else if (value.length < state.settings.length) {
             showError('Последовательность ещё не завершена.');
         }
         else if (isRepeatedGuess(value)) {
             showError('Эту последовательность вы уже пробовали.');
+            showFrog();
         }
         else {
             clearError();
@@ -73,15 +76,18 @@ export const renderGameInput = (state, onSubmit) => {
         updateInput(input.value + digit);
     };
     circle = renderRitualCircle(state.settings.base, victoryGuess, handleDigitClick, isWon);
-    const stage = el('div', { className: 'game__stage' }, ...(isWon
-        ? [
-            el('img', {
-                className: 'game__demon',
-                src: './images/demon.webp',
-                alt: 'Призванный демон',
-            }),
-        ]
-        : []), circle);
+    const frog = el('img', { className: 'game__frog', src: './images/frog.webp', alt: '' });
+    const showFrog = () => {
+        frog.classList.remove('is-visible');
+        void frog.offsetWidth; // перезапуск анимации
+        frog.classList.add('is-visible');
+    };
+    const demon = el('img', {
+        className: 'game__demon',
+        src: './images/demon2.webp',
+        alt: 'Призванный демон',
+    });
+    const stage = el('div', { className: 'game__stage' }, ...(isWon ? [demon] : [frog]), circle);
     const trySubmit = () => {
         if (!canSubmit(input.value)) {
             validateInput(input.value, false);

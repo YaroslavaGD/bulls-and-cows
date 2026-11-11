@@ -9,6 +9,19 @@
   --color-muted: #9c7c84;
   --color-border: #49303b;
   --color-duplicate: #e291d0;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 40px;
+  --space-6: 64px;
+
+  --text-xs: 11px;
+  --text-sm: 13px;
+  --text-m: 1rem;
+  --text-lg: 1.5rem;
+  --text-xl: 2rem;
 }
 
 * {
@@ -50,7 +63,25 @@ select {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  gap: var(--space-5);
+}
+
+.menu__group-wrap {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: var(--space-5);
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.menu__group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 100%;
+  max-width: 440px;
 }
 
 .menu__base-options,
@@ -59,11 +90,6 @@ select {
   justify-content: space-between;
   gap: 4px;
   width: 100%;
-  max-width: 420px;
-}
-
-.menu__length-options {
-  margin-top: 4px;
 }
 
 .menu__base-slider,
@@ -74,9 +100,7 @@ select {
   outline: none;
   display: block;
   width: 100%;
-  max-width: 420px;
   height: 20px;
-  margin: 0;
   padding: 0;
   background: transparent;
   cursor: pointer;
@@ -138,11 +162,17 @@ select {
 
 .menu__label {
   width: 100%;
-  max-width: 420px;
-  margin: 0 0 -8px;
+  text-align: center;
   color: var(--color-muted);
   font-size: 12px;
   letter-spacing: 0.08em;
+}
+
+.menu__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
 }
 
 .menu__option {
@@ -168,9 +198,9 @@ select {
 }
 
 .menu__title {
-  margin: 0 0 12px;
+  margin: 0;
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(2.4rem, 4vw, 3.2rem);
+  font-size: clamp(2rem, 4vw, 3.2rem);
   font-weight: 500;
   letter-spacing: 0.12em;
   text-align: center;
@@ -489,6 +519,35 @@ select {
 }
 
 /* =========================
+   FROG
+========================= */
+.game__frog {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  width: 30%;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0.8);
+}
+
+.game__frog.is-visible {
+  animation: frog-pop 1.2s ease forwards;
+}
+
+@keyframes frog-pop {
+  15%,
+  70% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+}
+/* =========================
    GAME CONTROLS
 ========================= */
 
@@ -553,20 +612,36 @@ select {
 
 .game__history {
   width: 100%;
-  height: 280px;
-  flex: 0 0 280px;
+  height: 360px;
+  flex: 0 0 360px;
   padding: 12px 0;
   border: none;
   border-top: 1px solid var(--color-border);
   border-bottom: 1px solid var(--color-border);
   background: transparent;
   overflow-y: auto;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+.game__history::-webkit-scrollbar {
+  width: 6px;
+}
+
+.game__history::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+
+.game__history::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
 }
 
 .game__history-title {
   margin: 0 0 12px;
   color: var(--color-muted);
-  font-size: 11px;
+  font-size: var(--text-sm);
   font-weight: 400;
   letter-spacing: 0.16em;
 }
@@ -574,10 +649,11 @@ select {
 .game__history-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-3);
   margin: 0;
   padding: 0;
   list-style: none;
+  padding-right: var(--space-2);
 }
 
 .game__history-entry {
@@ -592,11 +668,25 @@ select {
   color: var(--color-text);
   font-family: monospace;
   letter-spacing: 0.12em;
+  font-size: var(--text-m);
 }
 
 .game__history-result {
+  display: flex;
+  gap: var(--space-3);
   color: var(--color-muted);
-  font-size: 11px;
+  font-size: var(--text-sm);
+}
+
+.game__history-score {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.game__history-icon {
+  width: 24px;
+  height: 24px;
 }
 
 /* =========================
@@ -801,6 +891,7 @@ select {
   .ritual__line--removing,
   .victory__char,
   .victory__result,
+  .game__frog.is-visible,
   .game__actions--victory,
   .game__demon {
     animation-duration: 0.01s;
@@ -825,7 +916,7 @@ select {
   }
 
   .game__stage {
-    width: min(90vw, 400px);
+    width: min(78vw, 400px);
   }
 
   .game__sidebar {
@@ -864,5 +955,14 @@ select {
 
   .records__details {
     gap: 8px 12px;
+  }
+
+  .ritual__button {
+    width: 35px;
+    height: 35px;
+  }
+
+  .game__stage {
+    width: min(75vw, 400px);
   }
 }

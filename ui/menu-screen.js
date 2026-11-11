@@ -16,10 +16,6 @@ export const renderMenuScreen = (onStart, onShowRecords) => {
         className: 'menu__label',
         textContent: 'ЯЗЫК ПРИЗЫВА',
     });
-    const lengthLabel = el('p', {
-        className: 'menu__label',
-        textContent: 'ЧИСЛО ЗНАКОВ',
-    });
     const baseOptions = el('div', { className: 'menu__base-options' }, ...BASES.map(({ name }) => el('span', {
         className: 'menu__option',
         textContent: name,
@@ -31,6 +27,10 @@ export const renderMenuScreen = (onStart, onShowRecords) => {
         max: '3',
         step: '1',
         value: '2',
+    });
+    const lengthLabel = el('p', {
+        className: 'menu__label',
+        textContent: 'ЧИСЛО ЗНАКОВ',
     });
     const lengthOptions = el('div', { className: 'menu__length-options' }, ...LENGTHS.map((length) => el('span', {
         className: 'menu__option',
@@ -107,5 +107,9 @@ export const renderMenuScreen = (onStart, onShowRecords) => {
         textContent: 'КНИГА РЕКОРДОВ',
     });
     records.addEventListener('click', onShowRecords);
-    return el('main', { className: 'screen screen--menu' }, title, baseLabel, baseOptions, baseSlider, lengthLabel, lengthOptions, lengthSlider, info, start, records);
+    const baseGroup = el('div', { className: 'menu__group' }, baseLabel, baseOptions, baseSlider);
+    const lengthGroup = el('div', { className: 'menu__group' }, lengthLabel, lengthOptions, lengthSlider);
+    const menuGroup = el('div', { className: 'menu__group-wrap' }, baseGroup, lengthGroup);
+    const actions = el('div', { className: 'menu__actions' }, start, records);
+    return el('main', { className: 'screen screen--menu' }, title, menuGroup, info, actions);
 };
