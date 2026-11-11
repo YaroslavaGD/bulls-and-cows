@@ -3,6 +3,7 @@ import { generateSecret } from './core/generateSecret.js';
 import { isValidGuess } from './core/isValidGuess.js';
 import type { GameSettings, GameState } from './core/types.js';
 import { addRecord, loadRecords, saveRecords } from './storage/records.js';
+import { focusGameInput } from './ui/game-input.js';
 import { renderGameScreen } from './ui/game-screen.js';
 import { renderMenuScreen } from './ui/menu-screen.js';
 import { renderRecordsScreen } from './ui/records-screen.js';
@@ -57,6 +58,8 @@ const render = (): void => {
       ? renderMenuScreen(startGame, toggleRecords)
       : renderGameScreen(state, handleSubmit, backToMenu, toggleRecords),
   );
+
+  focusGameInput();
 };
 
 render();

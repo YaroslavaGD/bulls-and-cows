@@ -4,6 +4,10 @@ import type { GameState } from '../core/types.js';
 import { el } from './dom.js';
 import { renderRitualCircle } from './ritual-circle.js';
 
+export const focusGameInput = (): void => {
+  document.querySelector<HTMLInputElement>('.game__input')?.focus();
+};
+
 export const renderGameInput = (
   state: GameState,
   onSubmit: (guess: string) => void,
@@ -105,11 +109,7 @@ export const renderGameInput = (
     circle,
   );
 
-  input.addEventListener('input', () => {
-    updateInput(input.value);
-  });
-
-  button.addEventListener('click', () => {
+  const trySubmit = (): void => {
     if (!canSubmit(input.value)) {
       validateInput(input.value, false);
       return;
@@ -117,7 +117,17 @@ export const renderGameInput = (
 
     clearError();
     onSubmit(input.value);
+  };
+
+  input.addEventListener('input', () => {
+    updateInput(input.value);
   });
+
+  input.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') trySubmit();
+  });
+
+  button.addEventListener('click', trySubmit);
 
   button.disabled = isWon || !canSubmit(input.value);
 
