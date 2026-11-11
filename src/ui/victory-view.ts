@@ -1,5 +1,6 @@
 import type { GameState } from '../core/types.js';
 import { el } from './dom.js';
+import { renderGameActions } from './game-actions.js';
 
 export const renderVictoryPanel = (state: GameState, onNewGame: () => void, onShowRecords: () => void): HTMLElement => {
   const text = `ПЕЧАТЬ\u00a0ВОССТАНОВЛЕНА`;
@@ -18,21 +19,7 @@ export const renderVictoryPanel = (state: GameState, onNewGame: () => void, onSh
     }),
   );
 
-  const newGame = el('button', {
-    type: 'button',
-    className: 'button button--secondary',
-    textContent: 'НОВЫЙ ПРИЗЫВ',
-  });
-  newGame.addEventListener('click', onNewGame);
-
-  const records = el('button', {
-    type: 'button',
-    className: 'button button--secondary',
-    textContent: 'КНИГА РЕКОРДОВ',
-  });
-  records.addEventListener('click', onShowRecords);
-
-  const actions = el('div', { className: 'game__actions game__actions--victory' }, newGame, records);
+  const actions = renderGameActions(onNewGame, onShowRecords, 'game__actions game__actions--victory');
 
   const sidebarVictory = el('aside', { className: 'game__sidebar' }, header, resultP, actions);
 

@@ -1,5 +1,6 @@
 import type { GameState } from '../core/types.js';
 import { el } from './dom.js';
+import { renderGameActions } from './game-actions.js';
 import { renderGameInput } from './game-input.js';
 import { renderHistory } from './history-view.js';
 import { renderVictoryPanel } from './victory-view.js';
@@ -32,21 +33,7 @@ export const renderGameScreen = (
     }),
   );
 
-  const newGame = el('button', {
-    type: 'button',
-    className: 'button button--secondary',
-    textContent: 'НОВЫЙ ПРИЗЫВ',
-  });
-  newGame.addEventListener('click', onNewGame);
-
-  const records = el('button', {
-    type: 'button',
-    className: 'button button--secondary',
-    textContent: 'КНИГА РЕКОРДОВ',
-  });
-  records.addEventListener('click', onShowRecords);
-
-  const actions = el('div', { className: 'game__actions' }, newGame, records);
+  const actions = renderGameActions(onNewGame, onShowRecords);
 
   const { stage, controls } = renderGameInput(state, onSubmit);
 
