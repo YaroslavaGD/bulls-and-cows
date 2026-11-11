@@ -67,6 +67,7 @@ export const renderGameInput = (
   const victoryGuess = isWon ? (state.history[state.history.length - 1]?.guess ?? '') : '';
 
   let circle: HTMLDivElement;
+  let previousValue = '';
 
   const updateInput = (value: string): void => {
     const hasInvalid = hasInvalidDigits(value);
@@ -74,9 +75,8 @@ export const renderGameInput = (
     input.value = [...value].filter(isDigit).join('').slice(0, state.settings.length);
 
     validateInput(input.value, hasInvalid);
-
-    const next = renderRitualCircle(state.settings.base, input.value, handleDigitClick, isWon);
-
+    const next = renderRitualCircle(state.settings.base, input.value, handleDigitClick, isWon, previousValue);
+    previousValue = input.value;
     circle.replaceWith(next);
     circle = next;
 

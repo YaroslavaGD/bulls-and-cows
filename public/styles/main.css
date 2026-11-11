@@ -50,6 +50,7 @@ select {
 .menu__length-options {
   display: flex;
   justify-content: space-between;
+  gap: 4px;
   width: 100%;
   max-width: 420px;
 }
@@ -152,11 +153,11 @@ select {
   color: var(--color-glow);
   background: rgb(181 30 67 / 20%);
   border-color: rgb(181 30 67 / 25%);
-  border-radius: 5px;
 }
 
 .menu__option:hover {
-  color: var(--color-text);
+  color: var(--color-glow);
+  border-color: rgb(181 30 67 / 25%);
 }
 
 .menu__title {
@@ -174,6 +175,7 @@ select {
 ========================= */
 
 .button {
+  min-width: 260px;
   padding: 12px 24px;
   border: 1px solid var(--color-border);
   background: transparent;
@@ -199,7 +201,6 @@ select {
 }
 
 .button--primary {
-  min-width: 260px;
   padding: 14px 24px;
   border-color: var(--color-primary);
   letter-spacing: 0.16em;
@@ -347,6 +348,30 @@ select {
   filter: drop-shadow(0 0 6px var(--color-glow));
 }
 
+.ritual__line--new {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: ritual-line-draw 0.3s ease-out forwards;
+}
+
+@keyframes ritual-line-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.ritual__line--removing {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  animation: ritual-line-erase 0.3s ease-in forwards;
+}
+
+@keyframes ritual-line-erase {
+  to {
+    stroke-dashoffset: 1;
+  }
+}
+
 .ritual__button {
   position: absolute;
   width: 38px;
@@ -364,6 +389,12 @@ select {
 .ritual__button:hover {
   border-color: var(--color-glow);
   color: var(--color-glow);
+}
+
+.ritual__button:focus-visible {
+  border-color: var(--color-glow);
+  color: var(--color-glow);
+  outline-color: transparent;
 }
 
 .ritual__button--active {
@@ -431,6 +462,8 @@ select {
 @media (prefers-reduced-motion: reduce) {
   .ritual--victory .ritual__plane,
   .ritual--victory .ritual__button,
+  .ritual__line--new,
+  .ritual__line--removing,
   .game__demon {
     animation-duration: 0.01s;
     animation-delay: 0s;

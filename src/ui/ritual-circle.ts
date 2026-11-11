@@ -15,28 +15,49 @@ export const getNodePosition = (index: number, count: number): Point => {
   };
 };
 
-const createRoute = (base: number, input: string): SVGSVGElement => {
-  const positions = [...input.toUpperCase()].map((char) => getNodePosition(parseInt(char, base), base));
+const createLine = (from: Point, to: Point, className: string): SVGLineElement => {
+  const line = document.createElementNS(SVG_NS, 'line');
+  line.setAttribute('class', className);
+  line.setAttribute('x1', String(from.x));
+  line.setAttribute('y1', String(from.y));
+  line.setAttribute('x2', String(to.x));
+  line.setAttribute('y2', String(to.y));
+  line.setAttribute('pathLength', '1');
+  return line;
+};
+
+const createRoute = (base: number, input: string, previousInput = ''): SVGSVGElement => {
+  const toPositions = (value: string): Point[] =>
+    [...value.toUpperCase()].map((char) => getNodePosition(parseInt(char, base), base));
+
+  const positions = toPositions(input);
+  const previousPositions = toPositions(previousInput);
+
+  const upper = input.toUpperCase();
+  const previousUpper = previousInput.toUpperCase();
+  const isGrowing = upper.length === previousUpper.length + 1 && upper.startsWith(previousUpper);
+  const isShrinking = previousUpper.length === upper.length + 1 && previousUpper.startsWith(upper);
+
+  const lastIndex = positions.length - 2;
 
   const lines = positions.slice(1).map((to, index) => {
-    const from = positions[index];
-    const line = document.createElementNS(SVG_NS, 'line');
-
-    line.setAttribute('class', 'ritual__line');
-    line.setAttribute('x1', String(from.x));
-    line.setAttribute('y1', String(from.y));
-    line.setAttribute('x2', String(to.x));
-    line.setAttribute('y2', String(to.y));
-
-    return line;
+    const isNew = isGrowing && index === lastIndex;
+    return createLine(positions[index], to, isNew ? 'ritual__line ritual__line--new' : 'ritual__line');
   });
+
+  const [removedFrom, removedTo] = previousPositions.slice(-2);
+
+  const removedLines =
+    isShrinking && previousPositions.length >= 2
+      ? [createLine(removedFrom, removedTo, 'ritual__line ritual__line--removing')]
+      : [];
 
   const svg = document.createElementNS(SVG_NS, 'svg');
 
   svg.setAttribute('class', 'ritual__route');
   svg.setAttribute('viewBox', `0 0 ${SIZE} ${SIZE}`);
 
-  svg.append(...lines);
+  svg.append(...lines, ...removedLines);
 
   return svg;
 };
@@ -46,6 +67,7 @@ export const renderRitualCircle = (
   input: string,
   onDigitClick: (digit: string) => void,
   isVictory = false,
+  previousInput = '',
 ): HTMLDivElement => {
   const activeDigits = [...input.toUpperCase()];
   const duplicateDigits = new Set(activeDigits.filter((digit, index) => activeDigits.indexOf(digit) !== index));
@@ -74,7 +96,7 @@ export const renderRitualCircle = (
     return button;
   });
 
-  const plane = el('div', { className: 'ritual__plane' }, createRoute(base, input), ...buttons);
+  const plane = el('div', { className: 'ritual__plane' }, createRoute(base, input, previousInput), ...buttons);
 
   return el(
     'div',
