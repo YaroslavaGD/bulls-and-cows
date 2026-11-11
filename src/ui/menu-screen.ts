@@ -22,11 +22,6 @@ export const renderMenuScreen = (onStart: (settings: GameSettings) => void, onSh
     textContent: 'ЯЗЫК ПРИЗЫВА',
   });
 
-  const lengthLabel = el('p', {
-    className: 'menu__label',
-    textContent: 'ЧИСЛО ЗНАКОВ',
-  });
-
   const baseOptions = el(
     'div',
     { className: 'menu__base-options' },
@@ -45,6 +40,11 @@ export const renderMenuScreen = (onStart: (settings: GameSettings) => void, onSh
     max: '3',
     step: '1',
     value: '2',
+  });
+
+  const lengthLabel = el('p', {
+    className: 'menu__label',
+    textContent: 'ЧИСЛО ЗНАКОВ',
   });
 
   const lengthOptions = el(
@@ -152,18 +152,13 @@ export const renderMenuScreen = (onStart: (settings: GameSettings) => void, onSh
   });
   records.addEventListener('click', onShowRecords);
 
-  return el(
-    'main',
-    { className: 'screen screen--menu' },
-    title,
-    baseLabel,
-    baseOptions,
-    baseSlider,
-    lengthLabel,
-    lengthOptions,
-    lengthSlider,
-    info,
-    start,
-    records,
-  );
+  const baseGroup = el('div', { className: 'menu__group' }, baseLabel, baseOptions, baseSlider);
+
+  const lengthGroup = el('div', { className: 'menu__group' }, lengthLabel, lengthOptions, lengthSlider);
+
+  const menuGroup = el('div', { className: 'menu__group-wrap' }, baseGroup, lengthGroup);
+
+  const actions = el('div', { className: 'menu__actions' }, start, records);
+
+  return el('main', { className: 'screen screen--menu' }, title, menuGroup, info, actions);
 };

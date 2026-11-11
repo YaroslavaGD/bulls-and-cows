@@ -1,6 +1,14 @@
 import type { HistoryEntry } from '../core/types.js';
 import { el } from './dom.js';
 
+const renderScore = (iconSrc: string, count: number): HTMLElement =>
+  el(
+    'span',
+    { className: 'game__history-score' },
+    el('img', { className: 'game__history-icon', src: iconSrc, alt: '' }),
+    el('span', { textContent: String(count) }),
+  );
+
 export const renderHistory = (history: HistoryEntry[]): HTMLElement => {
   return el(
     'section',
@@ -15,15 +23,20 @@ export const renderHistory = (history: HistoryEntry[]): HTMLElement => {
       ...[...history].reverse().map((entry) =>
         el(
           'li',
-          { className: 'game__history-entry' },
+          {
+            className: 'game__history-entry',
+            ariaLabel: `${entry.guess}: на месте ${entry.bulls}, не на месте ${entry.cows}`,
+          },
           el('span', {
             className: 'game__history-guess',
             textContent: entry.guess,
           }),
-          el('span', {
-            className: 'game__history-result',
-            textContent: `${entry.bulls} B · ${entry.cows} C`,
-          }),
+          el(
+            'span',
+            { className: 'game__history-result' },
+            renderScore('./images/bull.webp', entry.bulls),
+            renderScore('./images/cow.webp', entry.cows),
+          ),
         ),
       ),
     ),

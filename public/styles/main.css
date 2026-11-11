@@ -9,6 +9,18 @@
   --color-muted: #9c7c84;
   --color-border: #49303b;
   --color-duplicate: #e291d0;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 40px;
+  --space-6: 64px;
+
+  --text-xs: 11px;
+  --text-sm: 13px;
+  --text-lg: 1.5rem;
+  --text-xl: 2rem;
 }
 
 * {
@@ -50,7 +62,25 @@ select {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  gap: var(--space-5);
+}
+
+.menu__group-wrap {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: var(--space-5);
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.menu__group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 100%;
+  max-width: 440px;
 }
 
 .menu__base-options,
@@ -59,11 +89,6 @@ select {
   justify-content: space-between;
   gap: 4px;
   width: 100%;
-  max-width: 420px;
-}
-
-.menu__length-options {
-  margin-top: 4px;
 }
 
 .menu__base-slider,
@@ -74,9 +99,7 @@ select {
   outline: none;
   display: block;
   width: 100%;
-  max-width: 420px;
   height: 20px;
-  margin: 0;
   padding: 0;
   background: transparent;
   cursor: pointer;
@@ -138,11 +161,17 @@ select {
 
 .menu__label {
   width: 100%;
-  max-width: 420px;
-  margin: 0 0 -8px;
+  text-align: center;
   color: var(--color-muted);
   font-size: 12px;
   letter-spacing: 0.08em;
+}
+
+.menu__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
 }
 
 .menu__option {
@@ -168,7 +197,7 @@ select {
 }
 
 .menu__title {
-  margin: 0 0 12px;
+  margin: 0;
   font-family: 'Cormorant Garamond', serif;
   font-size: clamp(2.4rem, 4vw, 3.2rem);
   font-weight: 500;
@@ -561,6 +590,7 @@ select {
   border-bottom: 1px solid var(--color-border);
   background: transparent;
   overflow-y: auto;
+  scrollbar-gutter: stable;
 }
 
 .game__history-title {
@@ -578,6 +608,7 @@ select {
   margin: 0;
   padding: 0;
   list-style: none;
+  padding-right: var(--space-2);
 }
 
 .game__history-entry {
@@ -595,8 +626,21 @@ select {
 }
 
 .game__history-result {
+  display: flex;
+  gap: var(--space-3);
   color: var(--color-muted);
   font-size: 11px;
+}
+
+.game__history-score {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.game__history-icon {
+  width: 16px;
+  height: 16px;
 }
 
 /* =========================
