@@ -2,6 +2,7 @@ import type { GameState } from '../core/types.js';
 import { el } from './dom.js';
 import { renderGameInput } from './game-input.js';
 import { renderHistory } from './history-view.js';
+import { renderVictoryPanel } from './victory-view.js';
 
 export const renderGameScreen = (
   state: GameState,
@@ -31,12 +32,6 @@ export const renderGameScreen = (
     }),
   );
 
-  const message = isWon
-    ? el('p', {
-        textContent: `Печать восстановлена. Попыток: ${state.history.length}, время: ${Math.round(((state.finishedAt ?? 0) - state.startedAt) / 1000)} с`,
-      })
-    : null;
-
   const newGame = el('button', {
     type: 'button',
     className: 'button button--secondary',
@@ -55,14 +50,9 @@ export const renderGameScreen = (
 
   const { stage, controls } = renderGameInput(state, onSubmit);
 
-  const sidebar = el(
-    'aside',
-    { className: 'game__sidebar' },
-    controls,
-    renderHistory(state.history),
-    ...(message ? [message] : []),
-    actions,
-  );
+  const sidebarGame = el('aside', { className: 'game__sidebar' }, controls, renderHistory(state.history), actions);
+
+  const sidebar = isWon ? renderVictoryPanel(state, onNewGame, onShowRecords) : sidebarGame;
 
   return el('main', { className: 'screen screen--game' }, header, stage, sidebar);
 };
