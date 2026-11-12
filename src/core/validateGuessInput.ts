@@ -1,6 +1,4 @@
-import type { HistoryEntry } from './types.js';
-
-export type InputProblem = 'invalid-digits' | 'duplicate-digits' | 'incomplete' | 'repeated';
+import type { HistoryEntry, InputProblem } from './types.js';
 
 type ValidationContext = {
   length: number;

@@ -20,3 +20,5 @@ export type GameState = {
   startedAt: number;
   finishedAt: number | null;
 };
+
+export type InputProblem = 'invalid-digits' | 'duplicate-digits' | 'incomplete' | 'repeated';

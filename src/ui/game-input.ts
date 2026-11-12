@@ -1,9 +1,17 @@
 import { playDigit, playError } from '../audio/sound.js';
 import { createDigitValidator } from '../core/createDigitValidator.js';
 import { isValidGuess } from '../core/isValidGuess.js';
-import type { GameState } from '../core/types.js';
+import type { GameState, InputProblem } from '../core/types.js';
+import { findInputProblem } from '../core/validateGuessInput.js';
 import { el } from './dom.js';
 import { renderRitualCircle } from './ritual-circle.js';
+
+const MESSAGES: Record<InputProblem, string> = {
+  'invalid-digits': 'Некоторые знаки не принадлежат выбранной системе.',
+  'duplicate-digits': 'Каждый знак может встречаться только один раз.',
+  incomplete: 'Последовательность ещё не завершена.',
+  repeated: 'Эту последовательность вы уже пробовали.',
+};
 
 export const focusGameInput = (): void => {
   document.querySelector<HTMLInputElement>('.game__input')?.focus();
@@ -43,44 +51,34 @@ export const renderGameInput = (
     error.textContent = '';
   };
 
-  const hasDuplicateDigits = (value: string): boolean => {
-    const digits = [...value.toLowerCase()];
-    return new Set(digits).size !== digits.length;
-  };
-
   const isRepeatedGuess = (value: string): boolean =>
     state.history.some((entry) => entry.guess.toLowerCase() === value.toLowerCase());
 
   const canSubmit = (value: string): boolean =>
     isValidGuess(value, state.settings.length, state.settings.base) && !isRepeatedGuess(value);
 
-  const hasInvalidDigits = (value: string): boolean => [...value].some((digit) => !isDigit(digit));
+  const validateInput = (value: string): void => {
+    const problem = findInputProblem(value, {
+      length: state.settings.length,
+      isDigit,
+      history: state.history,
+    });
 
-  const validateInput = (value: string, hasInvalid: boolean): void => {
-    if (hasInvalid) {
-      showError('Некоторые знаки не принадлежат выбранной системе.');
-      showFrog();
-    } else if (hasDuplicateDigits(value)) {
-      showError('Каждый знак может встречаться только один раз.');
-      showFrog();
-    } else if (value.length < state.settings.length) {
-      showError('Последовательность ещё не завершена.');
-    } else if (isRepeatedGuess(value)) {
-      showError('Эту последовательность вы уже пробовали.');
-      showFrog();
-    } else {
+    if (problem === null) {
       clearError();
+      return;
     }
+
+    showError(MESSAGES[problem]);
+    if (problem !== 'incomplete') showFrog();
   };
   const victoryGuess = isWon ? (state.history[state.history.length - 1]?.guess ?? '') : '';
-  // if (isWon) {
-  //   playMelody([...victoryGuess].map((char) => parseInt(char, state.settings.base)));
-  // }
+
   let circle: HTMLDivElement;
   let previousValue = '';
 
   const updateInput = (value: string): void => {
-    const hasInvalid = hasInvalidDigits(value);
+    validateInput(value);
 
     input.value = [...value].filter(isDigit).join('').slice(0, state.settings.length);
 
@@ -89,7 +87,6 @@ export const renderGameInput = (
       playDigit(parseInt(input.value.slice(-1), state.settings.base));
     }
 
-    validateInput(input.value, hasInvalid);
     const next = renderRitualCircle(state.settings.base, input.value, handleDigitClick, isWon, previousValue);
     previousValue = input.value;
     circle.replaceWith(next);
@@ -124,7 +121,7 @@ export const renderGameInput = (
 
   const trySubmit = (): void => {
     if (!canSubmit(input.value)) {
-      validateInput(input.value, false);
+      validateInput(input.value);
       return;
     }
 
