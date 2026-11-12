@@ -1,4 +1,4 @@
-import { loadSounds } from './audio/sound.js';
+import { loadSounds, playMelody } from './audio/sound.js';
 import { createGame, submitGuess } from './core/gameState.js';
 import { generateSecret } from './core/generateSecret.js';
 import { isValidGuess } from './core/isValidGuess.js';
@@ -42,7 +42,9 @@ const handleSubmit = (guess: string): void => {
       timeMs: state.finishedAt - state.startedAt,
       finishedAt: state.finishedAt,
     };
+    const { settings } = state;
     saveRecords(addRecord(loadRecords(), entry, 10));
+    playMelody([...guess].map((char) => parseInt(char, settings.base)));
   }
 
   render();
