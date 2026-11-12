@@ -1,4 +1,4 @@
-import { playDigit } from '../audio/sound.js';
+import { playDigit, playError, playMelody } from '../audio/sound.js';
 import { createDigitValidator } from '../core/createDigitValidator.js';
 import { isValidGuess } from '../core/isValidGuess.js';
 import type { GameState } from '../core/types.js';
@@ -73,7 +73,9 @@ export const renderGameInput = (
     }
   };
   const victoryGuess = isWon ? (state.history[state.history.length - 1]?.guess ?? '') : '';
-
+  if (isWon) {
+    playMelody([...victoryGuess].map((char) => parseInt(char, state.settings.base)));
+  }
   let circle: HTMLDivElement;
   let previousValue = '';
 
@@ -109,6 +111,7 @@ export const renderGameInput = (
     frog.classList.remove('is-visible');
     void frog.offsetWidth; // перезапуск анимации
     frog.classList.add('is-visible');
+    playError();
   };
 
   const demon = el('img', {
