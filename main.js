@@ -1,3 +1,4 @@
+import { loadSounds, playMelody } from './audio/sound.js';
 import { createGame, submitGuess } from './core/gameState.js';
 import { generateSecret } from './core/generateSecret.js';
 import { isValidGuess } from './core/isValidGuess.js';
@@ -6,6 +7,11 @@ import { focusGameInput } from './ui/game-input.js';
 import { renderGameScreen } from './ui/game-screen.js';
 import { renderMenuScreen } from './ui/menu-screen.js';
 import { renderRecordsScreen } from './ui/records-screen.js';
+import { renderSoundToggle } from './ui/sound-toggle.js';
+loadSounds().catch(() => {
+    // Game works without sounds
+});
+const soundToggle = renderSoundToggle();
 let state = null; // null - menu, GameState - game
 const startGame = (settings) => {
     state = createGame(settings, generateSecret(settings.length, settings.base), Date.now());
@@ -29,7 +35,9 @@ const handleSubmit = (guess) => {
             timeMs: state.finishedAt - state.startedAt,
             finishedAt: state.finishedAt,
         };
+        const { settings } = state;
         saveRecords(addRecord(loadRecords(), entry, 10));
+        playMelody([...guess].map((char) => parseInt(char, settings.base)));
     }
     render();
 };
@@ -40,12 +48,12 @@ const toggleRecords = () => {
 };
 const render = () => {
     if (isRecordsOpen) {
-        document.body.replaceChildren(renderRecordsScreen(loadRecords(), toggleRecords));
+        document.body.replaceChildren(renderRecordsScreen(loadRecords(), toggleRecords), soundToggle);
         return;
     }
     document.body.replaceChildren(state === null
         ? renderMenuScreen(startGame, toggleRecords)
-        : renderGameScreen(state, handleSubmit, backToMenu, toggleRecords));
+        : renderGameScreen(state, handleSubmit, backToMenu, toggleRecords), soundToggle);
     focusGameInput();
 };
 render();
