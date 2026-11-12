@@ -1,3 +1,4 @@
+import { playDigit } from '../audio/sound.js';
 import { createDigitValidator } from '../core/createDigitValidator.js';
 import { isValidGuess } from '../core/isValidGuess.js';
 import type { GameState } from '../core/types.js';
@@ -80,6 +81,11 @@ export const renderGameInput = (
     const hasInvalid = hasInvalidDigits(value);
 
     input.value = [...value].filter(isDigit).join('').slice(0, state.settings.length);
+
+    const isGrowing = input.value.length > previousValue.length;
+    if (!isWon && isGrowing) {
+      playDigit(parseInt(input.value.slice(-1), state.settings.base));
+    }
 
     validateInput(input.value, hasInvalid);
     const next = renderRitualCircle(state.settings.base, input.value, handleDigitClick, isWon, previousValue);

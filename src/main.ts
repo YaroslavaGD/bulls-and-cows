@@ -1,3 +1,4 @@
+import { loadSounds } from './audio/sound.js';
 import { createGame, submitGuess } from './core/gameState.js';
 import { generateSecret } from './core/generateSecret.js';
 import { isValidGuess } from './core/isValidGuess.js';
@@ -7,6 +8,13 @@ import { focusGameInput } from './ui/game-input.js';
 import { renderGameScreen } from './ui/game-screen.js';
 import { renderMenuScreen } from './ui/menu-screen.js';
 import { renderRecordsScreen } from './ui/records-screen.js';
+import { renderSoundToggle } from './ui/sound-toggle.js';
+
+loadSounds().catch(() => {
+  // Game works without sounds
+});
+
+const soundToggle = renderSoundToggle();
 
 let state: GameState | null = null; // null - menu, GameState - game
 
@@ -49,7 +57,7 @@ const toggleRecords = (): void => {
 
 const render = (): void => {
   if (isRecordsOpen) {
-    document.body.replaceChildren(renderRecordsScreen(loadRecords(), toggleRecords));
+    document.body.replaceChildren(renderRecordsScreen(loadRecords(), toggleRecords), soundToggle);
     return;
   }
 
@@ -57,6 +65,7 @@ const render = (): void => {
     state === null
       ? renderMenuScreen(startGame, toggleRecords)
       : renderGameScreen(state, handleSubmit, backToMenu, toggleRecords),
+    soundToggle,
   );
 
   focusGameInput();
